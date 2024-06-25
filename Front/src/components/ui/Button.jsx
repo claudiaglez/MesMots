@@ -9,26 +9,29 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        default: "bg-green text-lightPink hover:bg-lightPink/90 hover:text-green",
+        filter:
+          "border-2 border-darkPink text-darkPink bg-cream hover:bg-darkPink hover:text-cream",
+        secondary:
+          "bg-blue text-lightPink hover:bg-green/80 hover:text-blue",
+        circle: "bg-darkPink text-cream hover:bg-cream/90 hover:text-darkPink",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        outline:
-          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-        secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
-        default: "h-10 px-4 py-2",
+        default: "h-10 px-20 py-3",
         sm: "h-9 rounded-md px-3",
         lg: "h-11 rounded-md px-8",
         icon: "h-10 w-10",
+        navbar: "h-10 px-8 py-2",
+        circle: "h-12 w-12 rounded-full",
+        filter: "rounded-full h-10 px-12",
       },
     },
     defaultVariants: {
       variant: "default",
-      size: "default",
+      size: "navbar",
     },
   }
 )
