@@ -1,5 +1,5 @@
 import React from "react";
-import { cn } from "@/lib/utils"; // Asegúrate de tener esta función definida en utils
+import { cn } from "@/lib/utils"; 
 
 const Card = React.forwardRef(
   ({ className, ...props }, ref) => (
