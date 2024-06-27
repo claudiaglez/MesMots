@@ -64,7 +64,7 @@ export function ProfileForm() {
             </FormItem>
           )}
         />
-        <div class="flex justify-evenly">
+        <div className="flex justify-evenly">
         <Button type="submit" variant="default">Ajouter</Button>
         <Button type="submit" variant="secondary">Arriére</Button>
         </div>
