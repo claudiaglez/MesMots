@@ -8,13 +8,14 @@ import { Button } from "@/components/ui/Button"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/app/ui/form"
 import { Input } from "@/app/ui/input"
+import { Textarea } from "@/app/ui/textarea"
+
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -43,18 +44,30 @@ export function ProfileForm() {
           name="username"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel>Auteur</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input placeholder="Écrire le nom de l'auteur" {...field} />
               </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
+              <FormLabel>Livre</FormLabel>
+              <FormControl>
+                <Input placeholder="Écrire le titre du livre" {...field} />
+              </FormControl>
+              <FormLabel>Date</FormLabel>
+              <FormControl>
+                <Input placeholder="Écrire le titre du livre" {...field} />
+              </FormControl>
+              <FormLabel>Phrase</FormLabel>
+              <FormControl>
+              <Textarea placeholder="Écrire ton citation" {...field} />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <div class="flex justify-evenly">
+        <Button type="submit" variant="default">Ajouter</Button>
+        <Button type="submit" variant="secondary">Arriére</Button>
+        </div>
       </form>
     </Form>
   )
