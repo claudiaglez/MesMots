@@ -1,13 +1,13 @@
 import './App.css'
-import { ProfileForm } from './app/ui/ProfileForm'
 import { Button } from './components/ui/Button'
+import FormView from './components/views/FormView'
 function App() {
 
   return (
     <>
     <div>
      <Button>Hello</Button>
-     <ProfileForm></ProfileForm>
+     <FormView />
     </div>
     </>
   )

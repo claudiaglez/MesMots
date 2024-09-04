@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route} from 'react-router-dom';
 import App from '../App';
-import FormView from '@/components/views/FormView';
+import FormView from '../components/views/FormView';
 
 const Router = () => {
   return (
