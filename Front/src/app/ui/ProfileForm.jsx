@@ -64,7 +64,7 @@ export function ProfileForm() {
               <div>
                 <FormLabel>Date </FormLabel>
                 <FormControl>
-                  <DatePickerDemo />
+                  <DatePickerDemo className="w-full" />
                 </FormControl>
               </div>
               <div>
