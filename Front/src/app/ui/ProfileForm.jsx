@@ -16,16 +16,21 @@ import { Textarea } from "@/app/ui/textarea";
 import { DatePickerDemo } from "./DatePicker";
 
 const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
+  auteur: z.string().min(2, { message: "L'auteur doit contenir au moins 2 caractères." }),
+  livre: z.string().min(2, { message: "Le titre du livre doit contenir au moins 2 caractères." }),
+  date: z.date().optional(), 
+  phrase: z.string().min(5, { message: "La citation doit contenir au moins 5 caractères." }),
 });
+
 
 export function ProfileForm() {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+      auteur: "",
+      livre: "",
+      date: null,
+      phrase: "",
     },
   });
 
@@ -38,7 +43,7 @@ export function ProfileForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
-          name="username"
+          name="auteur"
           render={({ field }) => (
             <FormItem className="space-y-4">
               <div>
@@ -51,6 +56,14 @@ export function ProfileForm() {
                   />
                 </FormControl>
               </div>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="livre"
+          render={({ field }) => (
+            <FormItem className="space-y-4">
               <div>
                 <FormLabel>Livre</FormLabel>
                 <FormControl>
@@ -61,32 +74,48 @@ export function ProfileForm() {
                   />
                 </FormControl>
               </div>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="date"
+          render={({ field }) => (
+            <FormItem className="space-y-4">
               <div>
                 <FormLabel>Date </FormLabel>
                 <FormControl>
-                  <DatePickerDemo className="w-full" />
+                  <DatePickerDemo {...field} className="w-full" />
                 </FormControl>
               </div>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="phrase"
+          render={({ field }) => (
+            <FormItem className="space-y-4">
               <div>
                 <FormLabel>Phrase</FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder="Écrire ton citation"
+                    placeholder="Écrire ta citation"
                     {...field}
                     className="w-full"
                   />
                 </FormControl>
               </div>
-              <FormMessage />
             </FormItem>
           )}
         />
+        <FormMessage />
         <div className="flex justify-evenly">
           <Button type="submit" variant="default">
             Ajouter
           </Button>
           <Button type="submit" variant="secondary">
-            Arriére
+            Arrière
           </Button>
         </div>
       </form>
