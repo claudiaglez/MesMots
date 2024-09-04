@@ -13,7 +13,7 @@ const buttonVariants = cva(
         filter:
           "border-2 border-darkPink text-darkPink bg-cream hover:bg-darkPink hover:text-cream",
         secondary:
-          "bg-blue text-lightPink hover:bg-green/80 hover:text-blue",
+          "bg-blue text-lightPink hover:bg-lightPink hover:text-blue",
         circle: "bg-darkPink text-cream hover:bg-cream/90 hover:text-darkPink",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
