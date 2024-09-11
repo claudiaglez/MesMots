@@ -85,7 +85,7 @@ export function ProfileForm() {
               <div className="flex flex-col items-center">
                 <FormLabel className="font-lifeSavers font-extrabold text-lg">Date </FormLabel>
                 <FormControl>
-                  <DatePickerDemo {...field} className="w-full font-lifeSavers" />
+                  <DatePickerDemo {...field} className="w-full font-lifeSavers text-center" />
                 </FormControl>
               </div>
             </FormItem>

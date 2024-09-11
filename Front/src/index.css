@@ -89,6 +89,6 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply bg-cream text-foreground font-sans;
   }
 }
