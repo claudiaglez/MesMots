@@ -47,12 +47,12 @@ export function ProfileForm() {
           render={({ field }) => (
             <FormItem className="space-y-4">
               <div>
-                <FormLabel className="font-lifeSavers font-extrabold">Auteur</FormLabel>
+                <FormLabel className="font-lifeSavers font-extrabold text-lg">Auteur/ice</FormLabel>
                 <FormControl>
                   <Input
                     placeholder="Écrire le nom de l'auteur"
                     {...field}
-                    className="w-full font-lifeSavers"
+                    className="w-full font-lifeSavers mt-3"
                   />
                 </FormControl>
               </div>
@@ -65,12 +65,12 @@ export function ProfileForm() {
           render={({ field }) => (
             <FormItem className="space-y-4">
               <div>
-                <FormLabel className="font-lifeSavers font-extrabold">Livre</FormLabel>
+                <FormLabel className="font-lifeSavers font-extrabold text-lg">Livre</FormLabel>
                 <FormControl>
                   <Input
                     placeholder="Écrire le titre du livre"
                     {...field}
-                    className="w-full font-lifeSavers"
+                    className="w-full font-lifeSavers mt-3"
                   />
                 </FormControl>
               </div>
@@ -82,8 +82,8 @@ export function ProfileForm() {
           name="date"
           render={({ field }) => (
             <FormItem className="space-y-4">
-              <div>
-                <FormLabel className="font-lifeSavers font-extrabold">Date </FormLabel>
+              <div className="flex flex-col items-center">
+                <FormLabel className="font-lifeSavers font-extrabold text-lg">Date </FormLabel>
                 <FormControl>
                   <DatePickerDemo {...field} className="w-full font-lifeSavers" />
                 </FormControl>
@@ -97,12 +97,12 @@ export function ProfileForm() {
           render={({ field }) => (
             <FormItem className="space-y-4">
               <div>
-                <FormLabel className="font-lifeSavers font-extrabold">Phrase</FormLabel>
+                <FormLabel className="font-lifeSavers font-extrabold text-lg">Phrase</FormLabel>
                 <FormControl>
                   <Textarea
                     placeholder="Écrire ta citation"
                     {...field}
-                    className="w-full font-lifeSavers"
+                    className="w-full font-lifeSavers mt-3"
                   />
                 </FormControl>
               </div>
