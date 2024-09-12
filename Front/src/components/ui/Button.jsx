@@ -27,11 +27,12 @@ const buttonVariants = cva(
         navbar: "h-10 px-8 py-2",
         circle: "h-12 w-12 rounded-full",
         filter: "rounded-full h-10 px-12",
+        responsive: "h-8 px-4 sm:h-9 sm:px-6 md:h-10 md:px-8",
       },
     },
     defaultVariants: {
       variant: "default",
-      size: "navbar",
+      size: "responsive",
     },
   }
 )

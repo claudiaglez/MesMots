@@ -52,7 +52,7 @@ export function ProfileForm() {
                   <Input
                     placeholder="Écrire le nom de l'auteur"
                     {...field}
-                    className="w-full font-lifeSavers mt-3"
+                    className="w-full font-lifeSavers mt-3 bg-lightPink"
                   />
                 </FormControl>
               </div>
@@ -70,7 +70,7 @@ export function ProfileForm() {
                   <Input
                     placeholder="Écrire le titre du livre"
                     {...field}
-                    className="w-full font-lifeSavers mt-3"
+                    className="w-full font-lifeSavers mt-3 bg-lightPink"
                   />
                 </FormControl>
               </div>
@@ -102,7 +102,7 @@ export function ProfileForm() {
                   <Textarea
                     placeholder="Écrire ta citation"
                     {...field}
-                    className="w-full font-lifeSavers mt-3"
+                    className="w-full font-lifeSavers mt-3 bg-lightPink"
                   />
                 </FormControl>
               </div>
