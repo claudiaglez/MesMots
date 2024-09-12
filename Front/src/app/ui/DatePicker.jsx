@@ -26,8 +26,8 @@ export function DatePickerDemo() {
             !date && "text-muted-foreground"
           )}
         >
-          <CalendarIcon className="mr-2 h-4 w-4" />
-          {date ? format(date, "PPP", { locale: fr }) : <span>Choisir une date</span>}
+          <CalendarIcon className="mr-2 h-4 w-4 text-lightPink" />
+          {date ? format(date, "PPP", { locale: fr }) : <span className="text-lightPink">Choisir une date</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">

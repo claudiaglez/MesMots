@@ -47,7 +47,7 @@ export function ProfileForm() {
           render={({ field }) => (
             <FormItem className="space-y-4">
               <div>
-                <FormLabel className="font-lifeSavers font-extrabold text-lg">Auteur/ice</FormLabel>
+                <FormLabel className="font-lifeSavers font-extrabold text-lg text-lightPink">Auteur/ice</FormLabel>
                 <FormControl>
                   <Input
                     placeholder="Écrire le nom de l'auteur"
@@ -65,7 +65,7 @@ export function ProfileForm() {
           render={({ field }) => (
             <FormItem className="space-y-4">
               <div>
-                <FormLabel className="font-lifeSavers font-extrabold text-lg">Livre</FormLabel>
+                <FormLabel className="font-lifeSavers font-extrabold text-lg text-lightPink">Livre</FormLabel>
                 <FormControl>
                   <Input
                     placeholder="Écrire le titre du livre"
@@ -83,7 +83,7 @@ export function ProfileForm() {
           render={({ field }) => (
             <FormItem className="space-y-4">
               <div className="flex flex-col items-center">
-                <FormLabel className="font-lifeSavers font-extrabold text-lg">Date </FormLabel>
+                <FormLabel className="font-lifeSavers font-extrabold text-lg text-lightPink">Date </FormLabel>
                 <FormControl>
                   <DatePickerDemo {...field} className="w-full font-lifeSavers text-center" />
                 </FormControl>
@@ -97,7 +97,7 @@ export function ProfileForm() {
           render={({ field }) => (
             <FormItem className="space-y-4">
               <div>
-                <FormLabel className="font-lifeSavers font-extrabold text-lg">Phrase</FormLabel>
+                <FormLabel className="font-lifeSavers font-extrabold text-lg text-lightPink">Phrase</FormLabel>
                 <FormControl>
                   <Textarea
                     placeholder="Écrire ta citation"
