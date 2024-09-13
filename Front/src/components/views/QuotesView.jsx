@@ -18,6 +18,7 @@ const QuotesView = () => {
             <div className="mt-4 text-sm text-gray-600">
               <p><strong>Libro:</strong> El libro de la vida</p>
               <p><strong>Autor:</strong> John Doe</p>
+              <p><strong>Fecha:</strong> fecha</p>
             </div>
           </CardContent>
           <CardFooter className="flex justify-end space-x-2 p-4">
