@@ -23,7 +23,7 @@ const QuotesView = () => {
           </CardContent>
           <CardFooter className="flex justify-end space-x-2 p-4">
                         <button className="flex items-center space-x-2 px-4 py-2 bg-blue-500 text-white rounded"> 
-                            <FaPenNib />
+                            <FaPenNib className="text-cream" />
                         </button>
                         <button className="flex items-center space-x-2 px-4 py-2 bg-red-500 text-white rounded">
                             <FaTrash className="text-darkPink" />
