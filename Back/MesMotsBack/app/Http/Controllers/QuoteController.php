@@ -7,18 +7,22 @@ use Illuminate\Http\Request;
 
 class QuoteController extends Controller
 {
-    public function index()
+    protected $quoteModel;
+
+    public function __construct()
     {
-        $quotes = Quote::all();
-        return response()->json($quotes);
+        $this->quoteModel = new Quote();
     }
 
     public function store(Request $request)
     {
-        $quote = Quote::create($request->all());
-        return response()->json($quote, 201);
+        $result = $this->quoteModel->createQuote($request->all());
+        return response()->json(['id' => $result->getInsertedId()]);
     }
 
+    public function index()
+    {
+        $quotes = $this->quoteModel->getAllQuotes();
+        return response()->json($quotes);
+    }
 }
-
-?>

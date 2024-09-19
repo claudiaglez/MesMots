@@ -2,14 +2,33 @@
 
 namespace App\Models;
 
-use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
+use MongoDB\Client;
+use Carbon\Carbon;
 
-class BookQuote extends Eloquent
+class Quote
 {
-    protected $connection = 'mongodb';
-    protected $collection = 'quotes';
+    protected $collection;
 
-    protected $fillable = ['book', 'author', 'quote', 'date'];
+    public function __construct()
+    {
+        $this->collection = (new Client(env('MONGODB_URI')))
+            ->selectCollection('mesMots', 'quotes');
+    }
+
+    public function createQuote($data)
+    {
+        $quote = [
+            'text' => $data['text'],
+            'author' => $data['author'],
+            'created_at' => Carbon::now(),
+        ];
+
+        return $this->collection->insertOne($quote);
+    }
+
+    public function getAllQuotes()
+    {
+        return iterator_to_array($this->collection->find());
+    }
 }
 
-?>
