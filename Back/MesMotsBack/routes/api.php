@@ -11,3 +11,4 @@ Route::get('/user', function (Request $request) {
 Route::post('/quotes', [QuoteController::class, 'store']);
 Route::get('/quotes', [QuoteController::class, 'index']);
 Route::get('/quotes/{id}', [QuoteController::class, 'show']);
+Route::put('/quotes/{id}', [QuoteController::class, 'update']);

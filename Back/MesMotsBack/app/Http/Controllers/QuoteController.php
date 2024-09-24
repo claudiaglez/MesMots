@@ -82,4 +82,36 @@ class QuoteController extends Controller
     return response()->json(['error' => 'Cita no encontrada'], 404);
 }
 
+public function update(Request $request, $id)
+{
+    // Validar los datos de entrada
+    $validatedData = $request->validate([
+        'author' => 'sometimes|required|string|max:255',
+        'title' => 'sometimes|required|string|max:255',
+        'phrase' => 'sometimes|required|string',
+        'date' => 'sometimes|required|date',
+    ]);
+
+    try {
+        
+        $collection = (new Client(env('MONGODB_URI')))->mesMots->quotes;
+
+        
+        $result = $collection->updateOne(
+            ['id' => $id], 
+            ['$set' => array_filter($validatedData)] 
+        );
+
+        if ($result->getModifiedCount() === 0) {
+            return response()->json(['error' => 'Cita no encontrada o no se realizaron cambios'], 404);
+        }
+
+        return response()->json(['message' => 'Cita actualizada correctamente'], 200);
+    } catch (\Exception $e) {
+        Log::error('Error al actualizar en MongoDB: ' . $e->getMessage());
+        return response()->json(['error' => 'Error al actualizar en MongoDB'], 500);
+    }
+}
+
+
 }
