@@ -10,4 +10,4 @@ Route::get('/user', function (Request $request) {
 
 Route::post('/quotes', [QuoteController::class, 'store']);
 Route::get('/quotes', [QuoteController::class, 'index']);
-Route::post('/quotes/test', [QuoteController::class, 'testInsert']);
+Route::get('/quotes/{id}', [QuoteController::class, 'show']);

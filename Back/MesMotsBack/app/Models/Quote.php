@@ -48,4 +48,23 @@ class Quote
             throw $e; // Manejo de excepciones
         }
     }
+    public function findQuoteById($id)
+    {
+        return $this->collection->findOne(['id' => $id]);
+    }
+
+    public function filterByAuthor($author)
+    {
+        return $this->collection->find(['author' => $author])->toArray();
+    }
+
+    public function filterByTitle($title)
+    {
+        return $this->collection->find(['title' => $title])->toArray();
+    }
+
+    public function filterByAuthorAndTitle($author, $title)
+    {
+        return $this->collection->find(['author' => $author, 'title' => $title])->toArray();
+    }
 }

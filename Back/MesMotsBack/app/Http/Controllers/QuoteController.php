@@ -52,9 +52,34 @@ class QuoteController extends Controller
         }
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $quotes = $this->quoteModel->getAllQuotes();
+        $author = $request->query('author');
+        $title = $request->query('title');
+    
+        if ($author && $title) {
+            $quotes = $this->quoteModel->filterByAuthorAndTitle($author, $title);
+        } elseif ($author) {
+            $quotes = $this->quoteModel->filterByAuthor($author);
+        } elseif ($title) {
+            $quotes = $this->quoteModel->filterByTitle($title);
+        } else {
+            $quotes = $this->quoteModel->getAllQuotes();
+        }
+    
         return response()->json($quotes);
     }
+    
+
+    public function show($id)
+{
+    $quote = $this->quoteModel->findQuoteById($id); 
+    
+    if ($quote) {
+        return response()->json($quote);
+    }
+    
+    return response()->json(['error' => 'Cita no encontrada'], 404);
+}
+
 }
