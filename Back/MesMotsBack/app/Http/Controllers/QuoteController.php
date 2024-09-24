@@ -113,5 +113,29 @@ public function update(Request $request, $id)
     }
 }
 
+public function destroy($id)
+{
+    try {
+        $collection = (new Client(env('MONGODB_URI')))->mesMots->quotes;
+
+        // Intentar eliminar la cita por su ID
+        $result = $collection->deleteOne(['id' => $id]);
+
+        if ($result->getDeletedCount() === 0) {
+            return response()->json(['error' => 'Cita no encontrada'], 404);
+        }
+
+        return response()->json(['message' => 'Cita eliminada correctamente'], 200);
+    } catch (\Throwable $e) {
+        Log::error('Error al eliminar la cita: ' . $e->getMessage());
+        return response()->json(['error' => 'Error al eliminar la cita'], 500);
+    } catch (\Exception $e) {
+        Log::error('Error inesperado: ' . $e->getMessage());
+        return response()->json(['error' => 'Error inesperado'], 500);
+    }
+}
+
+
+
 
 }
