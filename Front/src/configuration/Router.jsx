@@ -1,13 +1,13 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route} from 'react-router-dom';
-import App from '../App';
 import FormView from '../components/views/FormView';
+import HomeView from '@/components/views/HomeView';
 
 const Router = () => {
   return (
     <BrowserRouter>
     <Routes>
-        <Route path="/" element={<App />} />
+        <Route path="/" element={<HomeView />} />
         <Route path="/ajouter" element={<FormView />} />
     </Routes>
     </BrowserRouter>
