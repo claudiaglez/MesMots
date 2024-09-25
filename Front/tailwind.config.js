@@ -23,7 +23,18 @@ module.exports = {
         green: "#0CCA4A",
         blue: "#00BFB2",
     },
+    
     extend: {
+      fontFamily: {
+        fontFamily: {
+          lifeSavers: ['"Life Savers"', 'sans-serif'],
+        },
+        fontWeight: {
+          normal: 400,
+          bold: 700,
+          extraBold: 800,
+        },
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
