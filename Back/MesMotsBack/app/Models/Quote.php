@@ -29,14 +29,14 @@ class Quote
             'id' => (string) Str::uuid(),
             'author' => $data['author'],
             'title' => $data['title'],
-            'date' => Carbon::now(), // Usar Carbon para la fecha actual
+            'date' => Carbon::now(), 
             'phrase' => $data['phrase'],
         ];
-
+    
         try {
             return $this->collection->insertOne($quote);
         } catch (\Exception $e) {
-            throw $e; // Lanza la excepción para manejarla en el controlador
+            throw $e; 
         }
     }
 

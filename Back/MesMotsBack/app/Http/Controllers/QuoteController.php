@@ -20,37 +20,34 @@ class QuoteController extends Controller
     }
 
     public function store(Request $request)
-    {
+{
+    $validatedData = $request->validate([
+        'author' => 'required|string|max:255',
+        'title' => 'required|string|max:255',
+        'phrase' => 'required|string',
+    ]);
 
-        $validatedData = $request->validate([
-            'author' => 'required|string|max:255',
-            'title' => 'required|string|max:255',
-            'phrase' => 'required|string',
-            'date' => 'required|date',
-        ]);
+    $newQuote = [
+        'id' => (string) Str::uuid(),
+        'author' => $validatedData['author'],
+        'title' => $validatedData['title'],
+        'date' => Carbon::now(), 
+        'phrase' => $validatedData['phrase'],
+    ];
 
-        $newQuote = [
-            'id' => (string) Str::uuid(),
-            'author' => $validatedData['author'],
-            'title' => $validatedData['title'],
-            'date' => Carbon::parse($validatedData['date']),
-            'phrase' => $validatedData['phrase'],
-        ];
+    try {
+        $collection = (new Client(env('MONGODB_URI')))->mesMots->quotes;
+        $result = $collection->insertOne($newQuote);
 
-        try {
-
-            $collection = (new Client(env('MONGODB_URI')))->mesMots->quotes;
-            $result = $collection->insertOne($newQuote);
-
-            return response()->json(['id' => $result->getInsertedId()], 201);
-        } catch (\Throwable $e) {
-            Log::error('Error al insertar en MongoDB: ' . $e->getMessage());
-            return response()->json(['error' => 'Error al insertar en MongoDB'], 500);
-        } catch (\Exception $e) {
-            Log::error('Error inesperado: ' . $e->getMessage());
-            return response()->json(['error' => 'Error inesperado'], 500);
-        }
+        return response()->json(['id' => $result->getInsertedId()], 201);
+    } catch (\Throwable $e) {
+        Log::error('Error al insertar en MongoDB: ' . $e->getMessage());
+        return response()->json(['error' => 'Error al insertar en MongoDB'], 500);
+    } catch (\Exception $e) {
+        Log::error('Error inesperado: ' . $e->getMessage());
+        return response()->json(['error' => 'Error inesperado'], 500);
     }
+}
 
     public function index(Request $request)
     {
