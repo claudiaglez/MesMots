@@ -22,7 +22,6 @@ const formSchema = z.object({
   phrase: z.string().min(5, { message: "La citation doit contenir au moins 5 caractères." }),
 });
 
-
 export function ProfileForm() {
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -34,8 +33,35 @@ export function ProfileForm() {
     },
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    // Verificar si 'data.date' es un objeto Date antes de formatear
+    const formattedData = {
+      author: data.auteur, 
+      title: data.livre,   
+      phrase: data.phrase,
+      date: data.date instanceof Date ? data.date.toISOString().split('T')[0] : null, // Formato ISO
+    };
+
+    console.log('Datos enviados:', formattedData); // Depuración
+
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/quotes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formattedData), // Envía los datos como JSON
+      });
+  
+      if (!response.ok) {
+        throw new Error('Error en la solicitud');
+      }
+  
+      const result = await response.json();
+      console.log('Datos enviados con éxito:', result); // Verifica la respuesta
+    } catch (error) {
+      console.error('Error al enviar los datos:', error);
+    }
   };
 
   return (
@@ -83,9 +109,9 @@ export function ProfileForm() {
           render={({ field }) => (
             <FormItem className="space-y-4">
               <div className="flex flex-col items-center">
-                <FormLabel className="font-lifeSavers font-extrabold text-lg text-lightPink">Date </FormLabel>
+                <FormLabel className="font-lifeSavers font-extrabold text-lg text-lightPink">Date</FormLabel>
                 <FormControl>
-                  <DatePickerDemo {...field} className="w-full font-lifeSavers text-center" />
+                  <DatePickerDemo value={field.value} onChange={field.onChange} className="w-full font-lifeSavers text-center" />
                 </FormControl>
               </div>
             </FormItem>
@@ -114,7 +140,7 @@ export function ProfileForm() {
           <Button type="submit" variant="default">
             Ajouter
           </Button>
-          <Button type="submit" variant="secondary">
+          <Button type="button" variant="secondary" onClick={() => form.reset()}>
             Arrière
           </Button>
         </div>
@@ -122,3 +148,5 @@ export function ProfileForm() {
     </Form>
   );
 }
+
+

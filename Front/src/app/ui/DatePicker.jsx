@@ -1,20 +1,33 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { format } from "date-fns"
-import { Calendar as CalendarIcon } from "lucide-react"
-import { fr } from "date-fns/locale"; 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/Button"
-import { Calendar } from "@/app/ui/calendar"
+import * as React from "react";
+import { format } from "date-fns";
+import { Calendar as CalendarIcon } from "lucide-react";
+import { fr } from "date-fns/locale";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/Button";
+import { Calendar } from "@/app/ui/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/app/ui/popover"
+} from "@/app/ui/popover";
 
-export function DatePickerDemo() {
-  const [date, setDate] = React.useState(null);
+export function DatePickerDemo({ value, onChange }) {
+  const [date, setDate] = React.useState(value);
+
+  React.useEffect(() => {
+    setDate(value);
+  }, [value]);
+
+  const handleDateChange = (newDate) => {
+    if (newDate instanceof Date) {
+      setDate(newDate);
+      onChange(newDate); // Notifica al formulario del cambio
+    } else {
+      console.warn("La fecha seleccionada no es válida:", newDate);
+    }
+  };
 
   return (
     <Popover>
@@ -34,10 +47,11 @@ export function DatePickerDemo() {
         <Calendar
           mode="single"
           selected={date}
-          onSelect={setDate}
+          onSelect={handleDateChange}
           initialFocus
         />
       </PopoverContent>
     </Popover>
-  )
+  );
 }
+
