@@ -13,3 +13,8 @@ Route::get('/quotes', [QuoteController::class, 'index']);
 Route::get('/quotes/{id}', [QuoteController::class, 'show']);
 Route::put('/quotes/{id}', [QuoteController::class, 'update']);
 Route::delete('/quotes/{id}', [QuoteController::class, 'destroy']);
+
+Route::get('/test-db', function () {
+    dd(env('MONGODB_URI'));
+});
+
