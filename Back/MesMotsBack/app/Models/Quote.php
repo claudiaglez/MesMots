@@ -17,15 +17,16 @@ class Quote extends Model
     // Nombre de la colección en MongoDB
     protected $collection = 'quotes'; // La colección donde se almacenan los documentos
 
-    // Definir los campos que pueden ser asignados masivamente
-    protected $fillable = ['author', 'title', 'phrase'];
+   
+    protected $fillable = ['author', 'title', 'phrase', 'date'];
+    
+    // Habilitar el manejo automático de created_at y updated_at
+    public $timestamps = true;
 
-    // (Opcional) Si necesitas hacer casting de algún campo específico, como la fecha:
+
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
 }
-
-
 
