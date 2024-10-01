@@ -10,7 +10,6 @@ class QuoteController extends Controller
 {
     public function show($id)
     {
-        // Usar el método find() directamente
         $quote = Quote::find($id);
     
         if ($quote) {
@@ -24,14 +23,12 @@ class QuoteController extends Controller
 {
     $quotes = Quote::all();
 
-    // Formatea las fechas solo si están presentes
     $formattedQuotes = $quotes->map(function ($quote) {
         return [
             'id' => $quote->id,
             'phrase' => $quote->phrase,
             'author' => $quote->author,
             'title' => $quote->title,
-            // Solo formatea la fecha si está presente
             'date' => $quote->date ? Carbon::parse($quote->date)->toISOString() : null,
         ];
     });
@@ -40,14 +37,12 @@ class QuoteController extends Controller
 }
 
 
-    
-    // Crear una nueva cita
     public function store(Request $request)
     {
         $request->validate([
             'author' => 'required|string',
             'title' => 'nullable|string',
-            'phrase' => 'required|string', // Asegúrate de que la frase sea obligatoria
+            'phrase' => 'required|string',
         ]);
     
         $quote = new Quote;
@@ -55,19 +50,16 @@ class QuoteController extends Controller
         $quote->title = $request->title;
         $quote->phrase = $request->phrase;
     
-        // Asignar automáticamente la fecha actual
-        $quote->date = now(); // o Carbon::now();
+        $quote->date = now(); 
     
-        $quote->save(); // Laravel manejará created_at y updated_at automáticamente
+        $quote->save();
     
         return response()->json(["result" => "Quote created"], 201);
     }
     
 
-// Actualizar una cita existente
 public function update(Request $request, $id)
 {
-    // Usar el método find() directamente
     $quote = Quote::find($id);
 
     if ($quote) {
@@ -82,10 +74,9 @@ public function update(Request $request, $id)
     return response()->json(["message" => "Quote not found"], 404);
 }
 
-// Eliminar una cita existente
+
 public function destroy($id)
 {
-    // Usar el método find() directamente
     $quote = Quote::find($id);
 
     if ($quote) {
