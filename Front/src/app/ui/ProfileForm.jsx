@@ -13,12 +13,11 @@ import {
 } from "@/app/ui/form";
 import { Input } from "@/app/ui/input";
 import { Textarea } from "@/app/ui/textarea";
-import { DatePickerDemo } from "./DatePicker";
 
 const formSchema = z.object({
   auteur: z.string().min(2, { message: "L'auteur doit contenir au moins 2 caractères." }),
   livre: z.string().min(2, { message: "Le titre du livre doit contenir au moins 2 caractères." }),
-  date: z.date().optional(), 
+  // Eliminar el campo de fecha de aquí
   phrase: z.string().min(5, { message: "La citation doit contenir au moins 5 caractères." }),
 });
 
@@ -28,18 +27,16 @@ export function ProfileForm() {
     defaultValues: {
       auteur: "",
       livre: "",
-      date: null,
       phrase: "",
     },
   });
 
   const onSubmit = async (data) => {
-    // Verificar si 'data.date' es un objeto Date antes de formatear
     const formattedData = {
-      author: data.auteur, 
-      title: data.livre,   
+      author: data.auteur,
+      title: data.livre,
       phrase: data.phrase,
-      date: data.date instanceof Date ? data.date.toISOString().split('T')[0] : null, // Formato ISO
+      
     };
 
     console.log('Datos enviados:', formattedData); // Depuración
@@ -103,20 +100,7 @@ export function ProfileForm() {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="date"
-          render={({ field }) => (
-            <FormItem className="space-y-4">
-              <div className="flex flex-col items-center">
-                <FormLabel className="font-lifeSavers font-extrabold text-lg text-lightPink">Date</FormLabel>
-                <FormControl>
-                  <DatePickerDemo value={field.value} onChange={field.onChange} className="w-full font-lifeSavers text-center" />
-                </FormControl>
-              </div>
-            </FormItem>
-          )}
-        />
+        {/* Eliminar el campo de fecha de aquí */}
         <FormField
           control={form.control}
           name="phrase"
@@ -148,5 +132,6 @@ export function ProfileForm() {
     </Form>
   );
 }
+
 
 

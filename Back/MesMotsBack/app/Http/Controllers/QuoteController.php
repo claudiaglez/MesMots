@@ -2,137 +2,91 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Quote;
-use Illuminate\Support\Facades\Log;
-use MongoDB\Client;
-use Carbon\Carbon;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-
+use App\Models\Quote; 
+use Carbon\Carbon;
 
 class QuoteController extends Controller
 {
-    protected $quoteModel;
-
-    public function __construct()
+    public function show($id)
     {
-        $this->quoteModel = new Quote();
-    }
-
-    public function store(Request $request)
-{
-    $validatedData = $request->validate([
-        'author' => 'required|string|max:255',
-        'title' => 'required|string|max:255',
-        'phrase' => 'required|string',
-    ]);
-
-    $newQuote = [
-        'id' => (string) Str::uuid(),
-        'author' => $validatedData['author'],
-        'title' => $validatedData['title'],
-        'date' => Carbon::now(), 
-        'phrase' => $validatedData['phrase'],
-    ];
-
-    try {
-        $collection = (new Client(env('MONGODB_URI')))->mesMots->quotes;
-        $result = $collection->insertOne($newQuote);
-
-        return response()->json(['id' => $result->getInsertedId()], 201);
-    } catch (\Throwable $e) {
-        Log::error('Error al insertar en MongoDB: ' . $e->getMessage());
-        return response()->json(['error' => 'Error al insertar en MongoDB'], 500);
-    } catch (\Exception $e) {
-        Log::error('Error inesperado: ' . $e->getMessage());
-        return response()->json(['error' => 'Error inesperado'], 500);
-    }
-}
-
-    public function index(Request $request)
-    {
-        $author = $request->query('author');
-        $title = $request->query('title');
+        $quote = Quote::find($id);
     
-        if ($author && $title) {
-            $quotes = $this->quoteModel->filterByAuthorAndTitle($author, $title);
-        } elseif ($author) {
-            $quotes = $this->quoteModel->filterByAuthor($author);
-        } elseif ($title) {
-            $quotes = $this->quoteModel->filterByTitle($title);
-        } else {
-            $quotes = $this->quoteModel->getAllQuotes();
+        if ($quote) {
+            return view('quote', ['quote' => $quote]);
         }
     
-        return response()->json($quotes);
+        return response()->json(["message" => "Quote not found"], 404);
     }
-    
 
-    public function show($id)
+    public function index()
 {
-    $quote = $this->quoteModel->findQuoteById($id); 
+    $quotes = Quote::all();
+
+    $formattedQuotes = $quotes->map(function ($quote) {
+        return [
+            'id' => $quote->id,
+            'phrase' => $quote->phrase,
+            'author' => $quote->author,
+            'title' => $quote->title,
+            'date' => $quote->date ? Carbon::parse($quote->date)->toISOString() : null,
+        ];
+    });
+
+    return response()->json($formattedQuotes);
+}
+
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'author' => 'required|string',
+            'title' => 'nullable|string',
+            'phrase' => 'required|string',
+        ]);
     
-    if ($quote) {
-        return response()->json($quote);
+        $quote = new Quote;
+        $quote->author = $request->author;
+        $quote->title = $request->title;
+        $quote->phrase = $request->phrase;
+    
+        $quote->date = now(); 
+    
+        $quote->save();
+    
+        return response()->json(["result" => "Quote created"], 201);
     }
     
-    return response()->json(['error' => 'Cita no encontrada'], 404);
-}
 
 public function update(Request $request, $id)
 {
-    // Validar los datos de entrada
-    $validatedData = $request->validate([
-        'author' => 'sometimes|required|string|max:255',
-        'title' => 'sometimes|required|string|max:255',
-        'phrase' => 'sometimes|required|string',
-        'date' => 'sometimes|required|date',
-    ]);
+    $quote = Quote::find($id);
 
-    try {
-        
-        $collection = (new Client(env('MONGODB_URI')))->mesMots->quotes;
+    if ($quote) {
+        $quote->author = $request->author;
+        $quote->title = $request->title;
+        $quote->phrase = $request->phrase;
+        $quote->save();
 
-        
-        $result = $collection->updateOne(
-            ['id' => $id], 
-            ['$set' => array_filter($validatedData)] 
-        );
-
-        if ($result->getModifiedCount() === 0) {
-            return response()->json(['error' => 'Cita no encontrada o no se realizaron cambios'], 404);
-        }
-
-        return response()->json(['message' => 'Cita actualizada correctamente'], 200);
-    } catch (\Exception $e) {
-        Log::error('Error al actualizar en MongoDB: ' . $e->getMessage());
-        return response()->json(['error' => 'Error al actualizar en MongoDB'], 500);
+        return response()->json(["result" => "Quote updated"], 200);
     }
+
+    return response()->json(["message" => "Quote not found"], 404);
 }
+
 
 public function destroy($id)
 {
-    try {
-        $collection = (new Client(env('MONGODB_URI')))->mesMots->quotes;
+    $quote = Quote::find($id);
 
-        // Intentar eliminar la cita por su ID
-        $result = $collection->deleteOne(['id' => $id]);
+    if ($quote) {
+        $quote->delete();
 
-        if ($result->getDeletedCount() === 0) {
-            return response()->json(['error' => 'Cita no encontrada'], 404);
-        }
-
-        return response()->json(['message' => 'Cita eliminada correctamente'], 200);
-    } catch (\Throwable $e) {
-        Log::error('Error al eliminar la cita: ' . $e->getMessage());
-        return response()->json(['error' => 'Error al eliminar la cita'], 500);
-    } catch (\Exception $e) {
-        Log::error('Error inesperado: ' . $e->getMessage());
-        return response()->json(['error' => 'Error inesperado'], 500);
+        return response()->json(["result" => "Quote deleted"], 200);
     }
+
+    return response()->json(["message" => "Quote not found"], 404);
 }
 
-
-
-
 }
+

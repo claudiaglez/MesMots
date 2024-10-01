@@ -2,69 +2,28 @@
 
 namespace App\Models;
 
-use MongoDB\Client;
-use Carbon\Carbon;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Log;
+namespace App\Models;
 
-class Quote
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use MongoDB\Laravel\Eloquent\Model;
+
+class Quote extends Model
 {
-    protected $collection;
+    use HasFactory;
 
-    public function __construct()
-    {
-        try {
-            $this->collection = (new Client(env('MONGODB_URI')))
-                ->mesMots->quotes;
-            Log::info('Conexión a MongoDB establecida correctamente.');
-        } catch (\Exception $e) {
-            Log::error('Error al conectar a MongoDB: ' . $e->getMessage());
-        }
-    }
+    protected $connection = 'mongodb'; 
+
+    protected $collection = 'quotes'; 
+
+   
+    protected $fillable = ['author', 'title', 'phrase', 'date'];
     
+    public $timestamps = true;
 
-    public function createQuote($data)
-    {
-        $quote = [
-            'id' => (string) Str::uuid(),
-            'author' => $data['author'],
-            'title' => $data['title'],
-            'date' => Carbon::now(), 
-            'phrase' => $data['phrase'],
-        ];
-    
-        try {
-            return $this->collection->insertOne($quote);
-        } catch (\Exception $e) {
-            throw $e; 
-        }
-    }
 
-    public function getAllQuotes()
-    {
-        try {
-            return iterator_to_array($this->collection->find());
-        } catch (\Exception $e) {
-            throw $e; // Manejo de excepciones
-        }
-    }
-    public function findQuoteById($id)
-    {
-        return $this->collection->findOne(['id' => $id]);
-    }
-
-    public function filterByAuthor($author)
-    {
-        return $this->collection->find(['author' => $author])->toArray();
-    }
-
-    public function filterByTitle($title)
-    {
-        return $this->collection->find(['title' => $title])->toArray();
-    }
-
-    public function filterByAuthorAndTitle($author, $title)
-    {
-        return $this->collection->find(['author' => $author, 'title' => $title])->toArray();
-    }
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
 }
+
