@@ -13,15 +13,13 @@ import {
 } from "@/app/ui/form";
 import { Input } from "@/app/ui/input";
 import { Textarea } from "@/app/ui/textarea";
-import { DatePickerDemo } from "./DatePicker";
 
 const formSchema = z.object({
   auteur: z.string().min(2, { message: "L'auteur doit contenir au moins 2 caractères." }),
   livre: z.string().min(2, { message: "Le titre du livre doit contenir au moins 2 caractères." }),
-  date: z.date().optional(), 
+  // Eliminar el campo de fecha de aquí
   phrase: z.string().min(5, { message: "La citation doit contenir au moins 5 caractères." }),
 });
-
 
 export function ProfileForm() {
   const form = useForm({
@@ -29,13 +27,38 @@ export function ProfileForm() {
     defaultValues: {
       auteur: "",
       livre: "",
-      date: null,
       phrase: "",
     },
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    const formattedData = {
+      author: data.auteur,
+      title: data.livre,
+      phrase: data.phrase,
+      
+    };
+
+    console.log('Datos enviados:', formattedData); // Depuración
+
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/quotes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formattedData), // Envía los datos como JSON
+      });
+  
+      if (!response.ok) {
+        throw new Error('Error en la solicitud');
+      }
+  
+      const result = await response.json();
+      console.log('Datos enviados con éxito:', result); // Verifica la respuesta
+    } catch (error) {
+      console.error('Error al enviar los datos:', error);
+    }
   };
 
   return (
@@ -77,20 +100,7 @@ export function ProfileForm() {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="date"
-          render={({ field }) => (
-            <FormItem className="space-y-4">
-              <div className="flex flex-col items-center">
-                <FormLabel className="font-lifeSavers font-extrabold text-lg text-lightPink">Date </FormLabel>
-                <FormControl>
-                  <DatePickerDemo {...field} className="w-full font-lifeSavers text-center" />
-                </FormControl>
-              </div>
-            </FormItem>
-          )}
-        />
+        {/* Eliminar el campo de fecha de aquí */}
         <FormField
           control={form.control}
           name="phrase"
@@ -114,7 +124,7 @@ export function ProfileForm() {
           <Button type="submit" variant="default">
             Ajouter
           </Button>
-          <Button type="submit" variant="secondary">
+          <Button type="button" variant="secondary" onClick={() => form.reset()}>
             Arrière
           </Button>
         </div>
@@ -122,3 +132,6 @@ export function ProfileForm() {
     </Form>
   );
 }
+
+
+

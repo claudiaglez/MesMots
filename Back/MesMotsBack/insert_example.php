@@ -11,10 +11,10 @@ $collection = $client->mesMots->quotes;
 
 $newQuote = [
     'id' => (string) Str::uuid(), // Generar un ID único
-    'author' => 'Theodor Kalifatides',
-    'title' => 'Timandra',
+    'author' => 'Buenas',
+    'title' => 'Tardes',
     'date' => date('Y-m-d H:i:s'),
-    'phrase' => 'JAfjaehfklhearbdfjlzabfeh',
+    'phrase' => 'Sip',
 ];
 
 try {

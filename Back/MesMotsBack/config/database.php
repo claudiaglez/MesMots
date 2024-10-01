@@ -112,11 +112,13 @@ return [
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
 
-       'mongodb' => [
-    'driver' => 'mongodb',
-    'dsn' => env('MONGODB_URI', 'mongodb+srv://claudiaglezg:naranja07@cluster0.7mbathm.mongodb.net/mesMots'),
-    'database' => 'mesMots',
+
+    'mongodb' => [
+        'driver' => 'mongodb',
+        'dsn' => env('DB_URI', 'mongodb+srv://claudiaglezg:naranja07@cluster0.7mbathm.mongodb.net/?retryWrites=true&w=majority'),
+        'database' => 'mesMots',
 ],
+
 
 
     ],
