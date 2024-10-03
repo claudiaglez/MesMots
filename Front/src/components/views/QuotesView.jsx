@@ -85,48 +85,53 @@ const QuotesView = () => {
         }
     };
 
-    const colors = ['bg-darkPink', 'bg-lightPink', 'bg-green', 'bg-blue'];
+    const colors = [
+        { bgColor: 'bg-darkPink', textColor: 'text-cream' },
+        { bgColor: 'bg-lightPink', textColor: 'text-blue' },
+        { bgColor: 'bg-green', textColor: 'text-lightPink' },
+        { bgColor: 'bg-blue', textColor: 'text-black' },
+      ];
 
     return (
         <div className="h-screen flex flex-col">
             <Navbar />
             <div className={`flex flex-1 justify-center items-center flex-wrap ${selectedQuote ? 'blur-sm' : ''}`}>
-                {quotes.map((quote, index) => {
-                    const formattedDate = quote.date ? formatDate(quote.date) : "La date n'est pas disponible";
-                    const colorClass = colors[index % colors.length];
+            {quotes.map((quote, index) => {
+  const formattedDate = quote.date ? formatDate(quote.date) : "La date n'est pas disponible";
+  const colorClass = colors[index % colors.length];
 
                     return (
                         <Card
-                            key={quote.id}
-                            className={`relative w-64 h-64 m-4 cursor-pointer hover:shadow-lg ${colorClass}`}
-                            onClick={() => {
-                                setSelectedQuote(quote);
-                                setSelectedColor(colorClass);
+                        key={quote.id}
+                        className={`relative w-64 h-64 m-4 cursor-pointer hover:shadow-lg ${colorClass.bgColor}`}
+                        onClick={() => {
+                          setSelectedQuote(quote);
+                          setSelectedColor(colorClass.bgColor);
+                        }}
+                      >
+                        <CardContent className={`p-4 ${colorClass.textColor}`}>
+                          <p className="text-lg truncate">“{quote.phrase || quote.text}”</p>
+                          <div className="mt-2 text-sm">
+                            <p><strong>Livre:</strong> {quote.title || "Le titre n'est pas disponible"}</p>
+                            <p><strong>Auteur:</strong> {quote.author || "L'auteur n'est pas disponible"}</p>
+                            <p><strong>Date:</strong> {formattedDate}</p>
+                          </div>
+                        </CardContent>
+                        <CardFooter className="flex justify-end space-x-2 p-4">
+                          <button className="flex items-center space-x-2 px-4 py-2 bg-blue-500 text-white rounded">
+                            <FaPenNib />
+                          </button>
+                          <button
+                            className="flex items-center space-x-2 px-4 py-2 bg-red-500 text-white rounded"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDelete(quote.id);
                             }}
-                        >
-                            <CardContent className="p-4">
-                                <p className="text-lg truncate">“{quote.phrase || quote.text}”</p>
-                                <div className="mt-2 text-sm text-gray-600">
-                                    <p><strong>Livre:</strong> {quote.title || "Le titre n'est pas disponible"}</p>
-                                    <p><strong>Auteur:</strong> {quote.author || "L'auteur n'est pas disponible"}</p>
-                                    <p><strong>Date:</strong> {formattedDate}</p>
-                                </div>
-                            </CardContent>
-                            <CardFooter className="flex justify-end space-x-2 p-4">
-                                <button className="flex items-center space-x-2 px-4 py-2 bg-blue-500 text-white rounded">
-                                    <FaPenNib />
-                                </button>
-                                <button
-                                    className="flex items-center space-x-2 px-4 py-2 bg-red-500 text-white rounded"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        handleDelete(quote.id);
-                                    }}
-                                >
-                                    <FaTrash />
-                                </button>
-                            </CardFooter>
-                        </Card>
+                          >
+                            <FaTrash />
+                          </button>
+                        </CardFooter>
+                      </Card>
                     );
                 })}
             </div>
