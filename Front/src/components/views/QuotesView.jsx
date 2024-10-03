@@ -109,28 +109,9 @@ const QuotesView = () => {
                           setSelectedColor(colorClass.bgColor);
                         }}
                       >
-                        <CardContent className={`p-4 ${colorClass.textColor}`}>
+                        <CardContent className={`text-center p-4 flex justify-center items-center h-full ${colorClass.textColor} font-lifeSavers`}>
                           <p className="text-lg truncate">“{quote.phrase || quote.text}”</p>
-                          <div className="mt-2 text-sm">
-                            <p><strong>Livre:</strong> {quote.title || "Le titre n'est pas disponible"}</p>
-                            <p><strong>Auteur:</strong> {quote.author || "L'auteur n'est pas disponible"}</p>
-                            <p><strong>Date:</strong> {formattedDate}</p>
-                          </div>
                         </CardContent>
-                        <CardFooter className="flex justify-end space-x-2 p-4">
-                          <button className="flex items-center space-x-2 px-4 py-2 bg-blue-500 text-white rounded">
-                            <FaPenNib />
-                          </button>
-                          <button
-                            className="flex items-center space-x-2 px-4 py-2 bg-red-500 text-white rounded"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleDelete(quote.id);
-                            }}
-                          >
-                            <FaTrash />
-                          </button>
-                        </CardFooter>
                       </Card>
                     );
                 })}
@@ -178,7 +159,7 @@ const QuotesView = () => {
                                 </div>
                             </div>
                         ) : (
-                            <CardContent className="p-4 overflow-y-auto max-h-96">
+                            <CardContent className="p-4 overflow-y-auto max-h-96 font-lifeSavers">
                                 <p className="text-lg mb-4">“{selectedQuote.phrase || selectedQuote.text}”</p>
                                 <div className="mt-4 text-sm text-gray-600">
                                     <p><strong>Livre:</strong> {selectedQuote.title || "Le titre n'est pas disponible"}</p>
@@ -195,7 +176,7 @@ const QuotesView = () => {
                                     onClick={handleEdit}
                                 >
                                     <FaPenNib />
-                                    <span>Éditer</span>
+                                    <span className="font-lifeSavers">Éditer</span>
                                 </button>
                             )}
                             <button
@@ -203,7 +184,7 @@ const QuotesView = () => {
                                 onClick={() => handleDelete(selectedQuote.id)}
                             >
                                 <FaTrash />
-                                <span>Éliminer</span>
+                                <span className="font-lifeSavers">Éliminer</span>
                             </button>
                         </CardFooter>
                     </div>
