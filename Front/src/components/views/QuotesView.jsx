@@ -7,12 +7,12 @@ import axios from 'axios';
 
 const QuotesView = () => {
     const [quotes, setQuotes] = useState([]);
-    const [selectedQuote, setSelectedQuote] = useState(null); // Estado para el modal
-    const [selectedColor, setSelectedColor] = useState(''); // Estado para el color de fondo de la card seleccionada
-    const [isEditing, setIsEditing] = useState(false); // Estado para modo edición
-    const [editedQuote, setEditedQuote] = useState({}); // Estado para almacenar la cita editada
+    const [selectedQuote, setSelectedQuote] = useState(null); 
+    const [selectedColor, setSelectedColor] = useState(''); 
+    const [isEditing, setIsEditing] = useState(false); 
+    const [editedQuote, setEditedQuote] = useState({}); 
 
-    // Función para obtener las citas desde la API
+
     const fetchQuotes = async () => {
         try {
             const response = await fetch('http://127.0.0.1:8000/api/quotes');
@@ -30,7 +30,6 @@ const QuotesView = () => {
         fetchQuotes();
     }, []);
 
-    // Función para formatear la fecha de MongoDB
     const formatDate = (mongoDate) => {
         if (!mongoDate) {
             return "La date n'est pas disponible";
@@ -46,49 +45,43 @@ const QuotesView = () => {
         });
     };
 
-    // Función para cerrar el modal
     const closeModal = () => {
         setSelectedQuote(null);
         setSelectedColor(''); 
         setIsEditing(false); 
     };
 
-    // Función para eliminar una cita
     const handleDelete = async (quoteId) => {
-        const confirmDelete = window.confirm("¿Estás segura de que quieres eliminar esta cita?");
+        const confirmDelete = window.confirm("Êtes-vous sûr de vouloir supprimer cette citation ?");
         if (!confirmDelete) return;
 
         try {
-            // Haciendo la solicitud DELETE a la API de Laravel
             await axios.delete(`http://127.0.0.1:8000/api/quotes/${quoteId}`);
-            // Actualizando el estado para reflejar el cambio
             setQuotes((prevQuotes) => prevQuotes.filter(quote => quote.id !== quoteId));
-            closeModal(); // Cerrar el modal después de eliminar
+            closeModal();
         } catch (error) {
             console.error("Error al eliminar la cita:", error);
         }
     };
 
-    // Función para manejar la edición
     const handleEdit = () => {
         setIsEditing(true);
-        setEditedQuote(selectedQuote); // Inicializa con la cita seleccionada
+        setEditedQuote(selectedQuote);
     };
 
-    // Función para guardar la cita editada
     const handleSave = async () => {
         try {
             await axios.put(`http://127.0.0.1:8000/api/quotes/${editedQuote.id}`, editedQuote);
-            // Actualizando la lista de citas con la cita editada
+    
             setQuotes((prevQuotes) =>
                 prevQuotes.map((quote) =>
                     quote.id === editedQuote.id ? editedQuote : quote
                 )
             );
             setIsEditing(false); 
-            closeModal(); // Cerrar el modal después de guardar
+            closeModal(); 
         } catch (error) {
-            console.error("Error al guardar la cita editada:", error);
+            console.error("Erreur d'enregistrement de la citation éditée:", error);
         }
     };
 
@@ -114,9 +107,9 @@ const QuotesView = () => {
                             <CardContent className="p-4">
                                 <p className="text-lg truncate">“{quote.phrase || quote.text}”</p>
                                 <div className="mt-2 text-sm text-gray-600">
-                                    <p><strong>Libro:</strong> {quote.title || "Le titre n'est pas disponible"}</p>
-                                    <p><strong>Autor:</strong> {quote.author || "L'auteur n'est pas disponible"}</p>
-                                    <p><strong>Fecha:</strong> {formattedDate}</p>
+                                    <p><strong>Livre:</strong> {quote.title || "Le titre n'est pas disponible"}</p>
+                                    <p><strong>Auteur:</strong> {quote.author || "L'auteur n'est pas disponible"}</p>
+                                    <p><strong>Date:</strong> {formattedDate}</p>
                                 </div>
                             </CardContent>
                             <CardFooter className="flex justify-end space-x-2 p-4">
@@ -183,9 +176,9 @@ const QuotesView = () => {
                             <CardContent className="p-4 overflow-y-auto max-h-96">
                                 <p className="text-lg mb-4">“{selectedQuote.phrase || selectedQuote.text}”</p>
                                 <div className="mt-4 text-sm text-gray-600">
-                                    <p><strong>Libro:</strong> {selectedQuote.title || "Le titre n'est pas disponible"}</p>
-                                    <p><strong>Autor:</strong> {selectedQuote.author || "L'auteur n'est pas disponible"}</p>
-                                    <p><strong>Fecha:</strong> {formatDate(selectedQuote.date)}</p>
+                                    <p><strong>Livre:</strong> {selectedQuote.title || "Le titre n'est pas disponible"}</p>
+                                    <p><strong>Auteur:</strong> {selectedQuote.author || "L'auteur n'est pas disponible"}</p>
+                                    <p><strong>Date:</strong> {formatDate(selectedQuote.date)}</p>
                                 </div>
                             </CardContent>
                         )}
@@ -197,7 +190,7 @@ const QuotesView = () => {
                                     onClick={handleEdit}
                                 >
                                     <FaPenNib />
-                                    <span>Editar</span>
+                                    <span>Éditer</span>
                                 </button>
                             )}
                             <button
@@ -205,7 +198,7 @@ const QuotesView = () => {
                                 onClick={() => handleDelete(selectedQuote.id)}
                             >
                                 <FaTrash />
-                                <span>Eliminar</span>
+                                <span>Éliminer</span>
                             </button>
                         </CardFooter>
                     </div>
