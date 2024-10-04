@@ -11,7 +11,9 @@ const QuotesView = () => {
     const [selectedColor, setSelectedColor] = useState(''); 
     const [isEditing, setIsEditing] = useState(false); 
     const [editedQuote, setEditedQuote] = useState({}); 
-
+    const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
+    const [quoteToDelete, setQuoteToDelete] = useState(null); 
+    const [isSuccessMessageVisible, setIsSuccessMessageVisible] = useState(false); // Nuevo estado para el mensaje de éxito
 
     const fetchQuotes = async () => {
         try {
@@ -51,16 +53,25 @@ const QuotesView = () => {
         setIsEditing(false); 
     };
 
-    const handleDelete = async (quoteId) => {
-        const confirmDelete = window.confirm("Êtes-vous sûr de vouloir supprimer cette citation ?");
-        if (!confirmDelete) return;
+    const handleDelete = (quoteId) => {
+        setQuoteToDelete(quoteId);
+        setIsAlertDialogOpen(true);
+    };
 
+    const confirmDelete = async () => {
         try {
-            await axios.delete(`http://127.0.0.1:8000/api/quotes/${quoteId}`);
-            setQuotes((prevQuotes) => prevQuotes.filter(quote => quote.id !== quoteId));
+            await axios.delete(`http://127.0.0.1:8000/api/quotes/${quoteToDelete}`);
+            setQuotes((prevQuotes) => prevQuotes.filter(quote => quote.id !== quoteToDelete));
+            setIsSuccessMessageVisible(true); // Mostrar el mensaje de éxito
+            setTimeout(() => {
+                setIsSuccessMessageVisible(false); // Ocultar el mensaje después de 3 segundos
+            }, 3000);
             closeModal();
         } catch (error) {
             console.error("Error al eliminar la cita:", error);
+        } finally {
+            setIsAlertDialogOpen(false); // Cerrar el diálogo después de la operación
+            setQuoteToDelete(null); // Resetear el ID de la cita a eliminar
         }
     };
 
@@ -90,29 +101,29 @@ const QuotesView = () => {
         { bgColor: 'bg-lightPink', textColor: 'text-blue' },
         { bgColor: 'bg-green', textColor: 'text-lightPink' },
         { bgColor: 'bg-blue', textColor: 'text-black' },
-      ];
+    ];
 
     return (
         <div className="h-screen flex flex-col">
             <Navbar />
             <div className={`flex flex-1 justify-center items-center flex-wrap ${selectedQuote ? 'blur-sm' : ''}`}>
-            {quotes.map((quote, index) => {
-  const formattedDate = quote.date ? formatDate(quote.date) : "La date n'est pas disponible";
-  const colorClass = colors[index % colors.length];
+                {quotes.map((quote, index) => {
+                    const formattedDate = quote.date ? formatDate(quote.date) : "La date n'est pas disponible";
+                    const colorClass = colors[index % colors.length];
 
                     return (
                         <Card
-                        key={quote.id}
-                        className={`relative w-64 h-64 m-4 cursor-pointer hover:shadow-lg ${colorClass.bgColor}`}
-                        onClick={() => {
-                          setSelectedQuote(quote);
-                          setSelectedColor(colorClass.bgColor);
-                        }}
-                      >
-                        <CardContent className={`text-center p-4 flex justify-center items-center h-full ${colorClass.textColor} font-lifeSavers`}>
-                          <p className="text-lg truncate">“{quote.phrase || quote.text}”</p>
-                        </CardContent>
-                      </Card>
+                            key={quote.id}
+                            className={`relative w-64 h-64 m-4 cursor-pointer hover:shadow-lg ${colorClass.bgColor}`}
+                            onClick={() => {
+                                setSelectedQuote(quote);
+                                setSelectedColor(colorClass.bgColor);
+                            }}
+                        >
+                            <CardContent className={`text-center p-4 flex justify-center items-center h-full ${colorClass.textColor} font-lifeSavers`}>
+                                <p className="text-lg truncate">“{quote.phrase || quote.text}”</p>
+                            </CardContent>
+                        </Card>
                     );
                 })}
             </div>
@@ -190,11 +201,44 @@ const QuotesView = () => {
                     </div>
                 </div>
             )}
+
+            {/* Alerta de confirmación de eliminación */}
+            {isAlertDialogOpen && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50">
+                    <div className="bg-cream font-lifeSavers p-6 rounded-lg shadow-lg max-w-sm w-full relative z-50">
+                        <h2 className="text-lg font-bold mb-4">Confirmer la suppression</h2>
+                        <p>Êtes-vous sûr de vouloir supprimer cette citation?</p>
+                        <div className="flex justify-end mt-4">
+                            <button
+                                className="px-4 py-2 bg-red-500 text-white rounded"
+                                onClick={confirmDelete}
+                            >
+                                Oui
+                            </button>
+                            <button
+                                className="px-4 py-2 bg-gray-300 rounded"
+                                onClick={() => setIsAlertDialogOpen(false)}
+                            >
+                                Annuler
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Mensaje de éxito después de la eliminación */}
+            {isSuccessMessageVisible && (
+                <div className="fixed bottom-5 right-5 bg-darkPink text-white px-4 py-2 rounded shadow-md z-50 font-lifeSavers font-bold">
+                    citation supprimée correctement!
+                </div>
+            )}
         </div>
     );
 };
 
 export default QuotesView;
+
+
 
 
 
