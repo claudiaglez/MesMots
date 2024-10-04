@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom"; 
 
 import { Button } from "@/components/ui/Button";
 import {
@@ -14,7 +15,7 @@ import {
 } from "@/app/ui/form";
 import { Input } from "@/app/ui/input";
 import { Textarea } from "@/app/ui/textarea";
-import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogFooter, AlertDialogTitle, AlertDialogDescription } from "@/app/ui/alert-dialog";
+import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogFooter, AlertDialogDescription } from "@/app/ui/alert-dialog";
 
 const formSchema = z.object({
   auteur: z.string().min(2, { message: "L'auteur doit contenir au moins 2 caractères." }),
@@ -23,9 +24,10 @@ const formSchema = z.object({
 });
 
 export function ProfileForm() {
+  const navigate = useNavigate(); 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [dialogMessage, setDialogMessage] = useState("");
-  
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -50,11 +52,11 @@ export function ProfileForm() {
         },
         body: JSON.stringify(formattedData),
       });
-  
+
       if (!response.ok) {
         throw new Error('Error en la solicitud');
       }
-  
+
       const result = await response.json();
       setDialogMessage('Bravo! Citation ajoutée correctement!');
     } catch (error) {
@@ -62,6 +64,11 @@ export function ProfileForm() {
     } finally {
       setIsDialogOpen(true);
     }
+  };
+
+  const handleDialogClose = () => {
+    setIsDialogOpen(false);
+    navigate("/phrases"); 
   };
 
   return (
@@ -134,14 +141,13 @@ export function ProfileForm() {
         </form>
       </Form>
 
-      {/* AlertDialog */}
       <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <AlertDialogContent className="bg-cream font-lifeSavers font-bold text-black rounded-lg shadow-lg p-6 ">
           <AlertDialogHeader>
             <AlertDialogDescription>{dialogMessage}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <Button variant="default" onClick={() => setIsDialogOpen(false)}>
+            <Button variant="default" onClick={handleDialogClose}> 
               Ok
             </Button>
           </AlertDialogFooter>
@@ -150,5 +156,4 @@ export function ProfileForm() {
     </>
   );
 }
-
 
