@@ -13,7 +13,7 @@ const QuotesView = () => {
     const [editedQuote, setEditedQuote] = useState({}); 
     const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
     const [quoteToDelete, setQuoteToDelete] = useState(null); 
-    const [isSuccessMessageVisible, setIsSuccessMessageVisible] = useState(false); // Nuevo estado para el mensaje de éxito
+    const [isSuccessMessageVisible, setIsSuccessMessageVisible] = useState(false);
 
     const fetchQuotes = async () => {
         try {
@@ -51,6 +51,7 @@ const QuotesView = () => {
         setSelectedQuote(null);
         setSelectedColor(''); 
         setIsEditing(false); 
+        setEditedQuote({}); 
     };
 
     const handleDelete = (quoteId) => {
@@ -62,16 +63,16 @@ const QuotesView = () => {
         try {
             await axios.delete(`http://127.0.0.1:8000/api/quotes/${quoteToDelete}`);
             setQuotes((prevQuotes) => prevQuotes.filter(quote => quote.id !== quoteToDelete));
-            setIsSuccessMessageVisible(true); // Mostrar el mensaje de éxito
+            setIsSuccessMessageVisible(true);
             setTimeout(() => {
-                setIsSuccessMessageVisible(false); // Ocultar el mensaje después de 3 segundos
+                setIsSuccessMessageVisible(false);
             }, 3000);
             closeModal();
         } catch (error) {
             console.error("Error al eliminar la cita:", error);
         } finally {
-            setIsAlertDialogOpen(false); // Cerrar el diálogo después de la operación
-            setQuoteToDelete(null); // Resetear el ID de la cita a eliminar
+            setIsAlertDialogOpen(false);
+            setQuoteToDelete(null);
         }
     };
 
@@ -83,14 +84,13 @@ const QuotesView = () => {
     const handleSave = async () => {
         try {
             await axios.put(`http://127.0.0.1:8000/api/quotes/${editedQuote.id}`, editedQuote);
-    
             setQuotes((prevQuotes) =>
                 prevQuotes.map((quote) =>
                     quote.id === editedQuote.id ? editedQuote : quote
                 )
             );
-            setIsEditing(false); 
-            closeModal(); 
+            setIsEditing(false);
+            closeModal();
         } catch (error) {
             console.error("Erreur d'enregistrement de la citation éditée:", error);
         }
@@ -137,7 +137,7 @@ const QuotesView = () => {
                             onClick={closeModal}
                         />
                         {isEditing ? (
-                            <div className="p-4">
+                            <div className="p-4 font-lifeSavers">
                                 <label className="block mb-2 text-sm font-bold text-gray-700">Frase:</label>
                                 <input
                                     type="text"
@@ -165,7 +165,7 @@ const QuotesView = () => {
                                         onClick={handleSave}
                                     >
                                         <FaSave />
-                                        <span>Guardar</span>
+                                        <span>Sauver</span>
                                     </button>
                                 </div>
                             </div>
@@ -190,46 +190,46 @@ const QuotesView = () => {
                                     <span className="font-lifeSavers">Éditer</span>
                                 </button>
                             )}
-                            <button
-                                className="flex items-center space-x-2 px-4 py-2 bg-red-500 text-white rounded"
-                                onClick={() => handleDelete(selectedQuote.id)}
-                            >
-                                <FaTrash />
-                                <span className="font-lifeSavers">Éliminer</span>
-                            </button>
+                            {!isEditing && (
+                                <button
+                                    className="flex items-center space-x-2 px-4 py-2 bg-red-500 text-white rounded"
+                                    onClick={() => handleDelete(selectedQuote.id)}
+                                >
+                                    <FaTrash />
+                                    <span className="font-lifeSavers">Éliminer</span>
+                                </button>
+                            )}
                         </CardFooter>
                     </div>
                 </div>
             )}
 
-            {/* Alerta de confirmación de eliminación */}
             {isAlertDialogOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50">
                     <div className="bg-cream font-lifeSavers p-6 rounded-lg shadow-lg max-w-sm w-full relative z-50">
-                        <h2 className="text-lg font-bold mb-4">Confirmer la suppression</h2>
-                        <p>Êtes-vous sûr de vouloir supprimer cette citation?</p>
+                        <h2 className="text-lg font-bold">Confirmer la suppression</h2>
+                        <p>Êtes-vous sûr de vouloir supprimer cette citation ?</p>
                         <div className="flex justify-end mt-4">
                             <button
-                                className="px-4 py-2 bg-red-500 text-white rounded"
+                                className="bg-green-500 text-white px-4 py-2 rounded mr-2"
                                 onClick={confirmDelete}
                             >
                                 Oui
                             </button>
                             <button
-                                className="px-4 py-2 bg-gray-300 rounded"
+                                className="bg-red-500 text-white px-4 py-2 rounded"
                                 onClick={() => setIsAlertDialogOpen(false)}
                             >
-                                Annuler
+                                Non
                             </button>
                         </div>
                     </div>
                 </div>
             )}
 
-            {/* Mensaje de éxito después de la eliminación */}
             {isSuccessMessageVisible && (
-                <div className="fixed bottom-5 right-5 bg-darkPink text-white px-4 py-2 rounded shadow-md z-50 font-lifeSavers font-bold">
-                    citation supprimée correctement!
+                <div className="fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded shadow-lg">
+                    Citation supprimée avec succès !
                 </div>
             )}
         </div>
@@ -237,6 +237,7 @@ const QuotesView = () => {
 };
 
 export default QuotesView;
+
 
 
 
