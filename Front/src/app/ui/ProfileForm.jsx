@@ -90,6 +90,7 @@ export function ProfileForm() {
                     />
                   </FormControl>
                 </div>
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -108,6 +109,7 @@ export function ProfileForm() {
                     />
                   </FormControl>
                 </div>
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -126,10 +128,10 @@ export function ProfileForm() {
                     />
                   </FormControl>
                 </div>
+                <FormMessage />
               </FormItem>
             )}
           />
-          <FormMessage />
           <div className="flex justify-evenly">
             <Button type="submit" variant="default">
               Ajouter
@@ -144,7 +146,7 @@ export function ProfileForm() {
       <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <AlertDialogContent className="bg-cream font-lifeSavers font-bold text-black rounded-lg shadow-lg p-6 ">
           <AlertDialogHeader>
-            <AlertDialogDescription>{dialogMessage}</AlertDialogDescription>
+            <AlertDialogDescription className="text-xl">{dialogMessage}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <Button variant="default" onClick={handleDialogClose}> 

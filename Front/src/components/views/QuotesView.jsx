@@ -82,6 +82,7 @@ const QuotesView = () => {
     };
 
     const handleSave = async () => {
+        console.log('Guardando cambios...');
         try {
             await axios.put(`http://127.0.0.1:8000/api/quotes/${editedQuote.id}`, editedQuote);
             setQuotes((prevQuotes) =>
@@ -113,17 +114,19 @@ const QuotesView = () => {
 
                     return (
                         <Card
-                            key={quote.id}
-                            className={`relative w-64 h-64 m-4 cursor-pointer hover:shadow-lg ${colorClass.bgColor}`}
-                            onClick={() => {
-                                setSelectedQuote(quote);
-                                setSelectedColor(colorClass.bgColor);
-                            }}
-                        >
-                            <CardContent className={`text-center p-4 flex justify-center items-center h-full ${colorClass.textColor} font-lifeSavers`}>
-                                <p className="text-lg truncate">“{quote.phrase || quote.text}”</p>
-                            </CardContent>
-                        </Card>
+                        key={quote.id}
+                        className={`relative w-64 h-64 m-4 cursor-pointer hover:shadow-lg ${colorClass.bgColor}`}
+                        onClick={() => {
+                            setSelectedQuote(quote);
+                            setSelectedColor(colorClass.bgColor);
+                        }}
+                    >
+                      <CardContent className={`text-center p-4 flex justify-center items-center h-full ${colorClass.textColor} font-lifeSavers card-content`}>
+    <p className="text-xl line-clamp-3">{quote.phrase || quote.text}</p>  
+</CardContent>
+
+
+                    </Card>
                     );
                 })}
             </div>
@@ -190,7 +193,7 @@ const QuotesView = () => {
                                     <span className="font-lifeSavers">Éditer</span>
                                 </button>
                             )}
-                            {!isEditing && (
+                            {!isEditing && ( 
                                 <button
                                     className="flex items-center space-x-2 px-4 py-2 bg-red-500 text-white rounded"
                                     onClick={() => handleDelete(selectedQuote.id)}
@@ -205,31 +208,25 @@ const QuotesView = () => {
             )}
 
             {isAlertDialogOpen && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50">
-                    <div className="bg-cream font-lifeSavers p-6 rounded-lg shadow-lg max-w-sm w-full relative z-50">
-                        <h2 className="text-lg font-bold">Confirmer la suppression</h2>
+                <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50 font-lifeSavers">
+                    <div className="p-6 rounded-lg shadow-lg bg-cream">
+                        <h2 className="text-xl font-bold mb-4">Confirmation</h2>
                         <p>Êtes-vous sûr de vouloir supprimer cette citation ?</p>
                         <div className="flex justify-end mt-4">
                             <button
-                                className="bg-green-500 text-white px-4 py-2 rounded mr-2"
+                                className="px-4 py-2 bg-red-500 text-white rounded font-bold"
                                 onClick={confirmDelete}
                             >
-                                Oui
+                                Oui, supprimer
                             </button>
                             <button
-                                className="bg-red-500 text-white px-4 py-2 rounded"
+                                className="px-4 py-2 bg-gray-300 rounded ml-2 font-bold"
                                 onClick={() => setIsAlertDialogOpen(false)}
                             >
-                                Non
+                                Annuler
                             </button>
                         </div>
                     </div>
-                </div>
-            )}
-
-            {isSuccessMessageVisible && (
-                <div className="fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded shadow-lg">
-                    Citation supprimée avec succès !
                 </div>
             )}
         </div>
@@ -237,9 +234,3 @@ const QuotesView = () => {
 };
 
 export default QuotesView;
-
-
-
-
-
-
