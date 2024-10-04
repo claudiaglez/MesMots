@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/Button";
 import {
@@ -13,15 +14,18 @@ import {
 } from "@/app/ui/form";
 import { Input } from "@/app/ui/input";
 import { Textarea } from "@/app/ui/textarea";
+import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogFooter, AlertDialogTitle, AlertDialogDescription } from "@/app/ui/alert-dialog";
 
 const formSchema = z.object({
   auteur: z.string().min(2, { message: "L'auteur doit contenir au moins 2 caractères." }),
   livre: z.string().min(2, { message: "Le titre du livre doit contenir au moins 2 caractères." }),
-  // Eliminar el campo de fecha de aquí
   phrase: z.string().min(5, { message: "La citation doit contenir au moins 5 caractères." }),
 });
 
 export function ProfileForm() {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [dialogMessage, setDialogMessage] = useState("");
+  
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -36,10 +40,7 @@ export function ProfileForm() {
       author: data.auteur,
       title: data.livre,
       phrase: data.phrase,
-      
     };
-
-    console.log('Datos enviados:', formattedData); // Depuración
 
     try {
       const response = await fetch('http://127.0.0.1:8000/api/quotes', {
@@ -47,7 +48,7 @@ export function ProfileForm() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formattedData), // Envía los datos como JSON
+        body: JSON.stringify(formattedData),
       });
   
       if (!response.ok) {
@@ -55,83 +56,99 @@ export function ProfileForm() {
       }
   
       const result = await response.json();
-      console.log('Datos enviados con éxito:', result); // Verifica la respuesta
+      setDialogMessage('Bravo! Citation ajoutée correctement!');
     } catch (error) {
-      console.error('Error al enviar los datos:', error);
+      setDialogMessage("Ooops! Erreur dans l'ajout de la citation");
+    } finally {
+      setIsDialogOpen(true);
     }
   };
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="auteur"
-          render={({ field }) => (
-            <FormItem className="space-y-4">
-              <div>
-                <FormLabel className="font-lifeSavers font-extrabold text-lg text-lightPink">Auteur/ice</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Écrire le nom de l'auteur"
-                    {...field}
-                    className="w-full font-lifeSavers mt-3 bg-lightPink"
-                  />
-                </FormControl>
-              </div>
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="livre"
-          render={({ field }) => (
-            <FormItem className="space-y-4">
-              <div>
-                <FormLabel className="font-lifeSavers font-extrabold text-lg text-lightPink">Livre</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Écrire le titre du livre"
-                    {...field}
-                    className="w-full font-lifeSavers mt-3 bg-lightPink"
-                  />
-                </FormControl>
-              </div>
-            </FormItem>
-          )}
-        />
-        {/* Eliminar el campo de fecha de aquí */}
-        <FormField
-          control={form.control}
-          name="phrase"
-          render={({ field }) => (
-            <FormItem className="space-y-4">
-              <div>
-                <FormLabel className="font-lifeSavers font-extrabold text-lg text-lightPink">Phrase</FormLabel>
-                <FormControl>
-                  <Textarea
-                    placeholder="Écrire ta citation"
-                    {...field}
-                    className="w-full font-lifeSavers mt-3 bg-lightPink"
-                  />
-                </FormControl>
-              </div>
-            </FormItem>
-          )}
-        />
-        <FormMessage />
-        <div className="flex justify-evenly">
-          <Button type="submit" variant="default">
-            Ajouter
-          </Button>
-          <Button type="button" variant="secondary" onClick={() => form.reset()}>
-            Arrière
-          </Button>
-        </div>
-      </form>
-    </Form>
+    <>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <FormField
+            control={form.control}
+            name="auteur"
+            render={({ field }) => (
+              <FormItem className="space-y-4">
+                <div>
+                  <FormLabel className="font-lifeSavers font-extrabold text-lg text-lightPink">Auteur/ice</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Écrire le nom de l'auteur"
+                      {...field}
+                      className="w-full font-lifeSavers mt-3 bg-lightPink"
+                    />
+                  </FormControl>
+                </div>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="livre"
+            render={({ field }) => (
+              <FormItem className="space-y-4">
+                <div>
+                  <FormLabel className="font-lifeSavers font-extrabold text-lg text-lightPink">Livre</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Écrire le titre du livre"
+                      {...field}
+                      className="w-full font-lifeSavers mt-3 bg-lightPink"
+                    />
+                  </FormControl>
+                </div>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="phrase"
+            render={({ field }) => (
+              <FormItem className="space-y-4">
+                <div>
+                  <FormLabel className="font-lifeSavers font-extrabold text-lg text-lightPink">Phrase</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Écrire ta citation"
+                      {...field}
+                      className="w-full font-lifeSavers mt-3 bg-lightPink"
+                    />
+                  </FormControl>
+                </div>
+              </FormItem>
+            )}
+          />
+          <FormMessage />
+          <div className="flex justify-evenly">
+            <Button type="submit" variant="default">
+              Ajouter
+            </Button>
+            <Button type="button" variant="secondary" onClick={() => form.reset()}>
+              Arrière
+            </Button>
+          </div>
+        </form>
+      </Form>
+
+      {/* AlertDialog */}
+      <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <AlertDialogContent className="bg-cream font-lifeSavers font-bold text-black rounded-lg shadow-lg p-6 ">
+          <AlertDialogHeader>
+            <AlertDialogDescription>{dialogMessage}</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <Button variant="default" onClick={() => setIsDialogOpen(false)}>
+              Ok
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 }
-
 
 
