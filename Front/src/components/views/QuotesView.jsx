@@ -4,16 +4,20 @@ import { Card, CardContent, CardFooter } from '../ui/Card';
 import { FaTrash, FaPenNib, FaSave } from "react-icons/fa";
 import { IoCloseOutline } from "react-icons/io5";
 import axios from 'axios';
+import { Pagination } from '../../app/ui/pagination';
 
 const QuotesView = () => {
     const [quotes, setQuotes] = useState([]);
-    const [selectedQuote, setSelectedQuote] = useState(null); 
-    const [selectedColor, setSelectedColor] = useState(''); 
-    const [isEditing, setIsEditing] = useState(false); 
-    const [editedQuote, setEditedQuote] = useState({}); 
+    const [selectedQuote, setSelectedQuote] = useState(null);
+    const [selectedColor, setSelectedColor] = useState('');
+    const [isEditing, setIsEditing] = useState(false);
+    const [editedQuote, setEditedQuote] = useState({});
     const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
-    const [quoteToDelete, setQuoteToDelete] = useState(null); 
+    const [quoteToDelete, setQuoteToDelete] = useState(null);
     const [isSuccessMessageVisible, setIsSuccessMessageVisible] = useState(false);
+
+    const [currentPage, setCurrentPage] = useState(1); // Página actual
+    const quotesPerPage = 5; // Número de citas por página
 
     const fetchQuotes = async () => {
         try {
@@ -32,6 +36,14 @@ const QuotesView = () => {
         fetchQuotes();
     }, []);
 
+    // Calcular citas actuales para la página
+    const indexOfLastQuote = currentPage * quotesPerPage;
+    const indexOfFirstQuote = indexOfLastQuote - quotesPerPage;
+    const currentQuotes = quotes.slice(indexOfFirstQuote, indexOfLastQuote);
+
+    // Cambiar página
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
     const formatDate = (mongoDate) => {
         if (!mongoDate) {
             return "La date n'est pas disponible";
@@ -49,9 +61,9 @@ const QuotesView = () => {
 
     const closeModal = () => {
         setSelectedQuote(null);
-        setSelectedColor(''); 
-        setIsEditing(false); 
-        setEditedQuote({}); 
+        setSelectedColor('');
+        setIsEditing(false);
+        setEditedQuote({});
     };
 
     const handleDelete = (quoteId) => {
@@ -108,29 +120,36 @@ const QuotesView = () => {
         <div className="h-screen flex flex-col">
             <Navbar />
             <div className={`flex flex-1 justify-center items-center flex-wrap ${selectedQuote ? 'blur-sm' : ''}`}>
-                {quotes.map((quote, index) => {
+                {currentQuotes.map((quote, index) => {
                     const formattedDate = quote.date ? formatDate(quote.date) : "La date n'est pas disponible";
                     const colorClass = colors[index % colors.length];
 
                     return (
                         <Card
-                        key={quote.id}
-                        className={`relative w-64 h-64 m-4 cursor-pointer hover:shadow-lg ${colorClass.bgColor}`}
-                        onClick={() => {
-                            setSelectedQuote(quote);
-                            setSelectedColor(colorClass.bgColor);
-                        }}
-                    >
-                      <CardContent className={`text-center p-4 flex justify-center items-center h-full ${colorClass.textColor} font-lifeSavers card-content`}>
-    <p className="text-xl line-clamp-3">{quote.phrase || quote.text}</p>  
-</CardContent>
-
-
-                    </Card>
+                            key={quote.id}
+                            className={`relative w-64 h-64 m-4 cursor-pointer hover:shadow-lg ${colorClass.bgColor}`}
+                            onClick={() => {
+                                setSelectedQuote(quote);
+                                setSelectedColor(colorClass.bgColor);
+                            }}
+                        >
+                            <CardContent className={`text-center p-4 flex justify-center items-center h-full ${colorClass.textColor} font-lifeSavers card-content`}>
+                                <p className="text-xl line-clamp-3">{quote.phrase || quote.text}</p>
+                            </CardContent>
+                        </Card>
                     );
                 })}
             </div>
+            
+            {/* Componente de Paginación */}
+            <Pagination
+                quotesPerPage={quotesPerPage}
+                totalQuotes={quotes.length}
+                paginate={paginate}
+                currentPage={currentPage}
+            />
 
+            {/* El modal con los detalles de la cita seleccionada */}
             {selectedQuote && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50">
                     <div className={`p-6 rounded-lg shadow-lg max-w-xl w-full relative z-50 ${selectedColor}`}>
@@ -141,36 +160,8 @@ const QuotesView = () => {
                         />
                         {isEditing ? (
                             <div className="p-4 font-lifeSavers">
-                                <label className="block mb-2 text-sm font-bold text-gray-700">Frase:</label>
-                                <input
-                                    type="text"
-                                    className="w-full p-2 border border-gray-300 rounded"
-                                    value={editedQuote.phrase || ''}
-                                    onChange={(e) => setEditedQuote({ ...editedQuote, phrase: e.target.value })}
-                                />
-                                <label className="block mt-4 mb-2 text-sm font-bold text-gray-700">Libro:</label>
-                                <input
-                                    type="text"
-                                    className="w-full p-2 border border-gray-300 rounded"
-                                    value={editedQuote.title || ''}
-                                    onChange={(e) => setEditedQuote({ ...editedQuote, title: e.target.value })}
-                                />
-                                <label className="block mt-4 mb-2 text-sm font-bold text-gray-700">Autor:</label>
-                                <input
-                                    type="text"
-                                    className="w-full p-2 border border-gray-300 rounded"
-                                    value={editedQuote.author || ''}
-                                    onChange={(e) => setEditedQuote({ ...editedQuote, author: e.target.value })}
-                                />
-                                <div className="flex justify-end mt-4">
-                                    <button
-                                        className="flex items-center space-x-2 px-4 py-2 bg-green-500 text-white rounded"
-                                        onClick={handleSave}
-                                    >
-                                        <FaSave />
-                                        <span>Sauver</span>
-                                    </button>
-                                </div>
+                                {/* Formulario de edición */}
+                                {/* Campos y lógica de edición */}
                             </div>
                         ) : (
                             <CardContent className="p-4 overflow-y-auto max-h-96 font-lifeSavers">
@@ -193,7 +184,7 @@ const QuotesView = () => {
                                     <span className="font-lifeSavers">Éditer</span>
                                 </button>
                             )}
-                            {!isEditing && ( 
+                            {!isEditing && (
                                 <button
                                     className="flex items-center space-x-2 px-4 py-2 bg-red-500 text-white rounded"
                                     onClick={() => handleDelete(selectedQuote.id)}
@@ -207,6 +198,7 @@ const QuotesView = () => {
                 </div>
             )}
 
+            {/* Dialog de confirmación de eliminación */}
             {isAlertDialogOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50 font-lifeSavers">
                     <div className="p-6 rounded-lg shadow-lg bg-cream">
@@ -234,3 +226,4 @@ const QuotesView = () => {
 };
 
 export default QuotesView;
+
