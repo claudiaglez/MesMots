@@ -16,8 +16,8 @@ const QuotesView = () => {
     const [quoteToDelete, setQuoteToDelete] = useState(null);
     const [isSuccessMessageVisible, setIsSuccessMessageVisible] = useState(false);
 
-    const [currentPage, setCurrentPage] = useState(1); // Página actual
-    const quotesPerPage = 5; // Número de citas por página
+    const [currentPage, setCurrentPage] = useState(1); 
+    const quotesPerPage = 10; 
 
     const fetchQuotes = async () => {
         try {
@@ -36,12 +36,10 @@ const QuotesView = () => {
         fetchQuotes();
     }, []);
 
-    // Calcular citas actuales para la página
     const indexOfLastQuote = currentPage * quotesPerPage;
     const indexOfFirstQuote = indexOfLastQuote - quotesPerPage;
     const currentQuotes = quotes.slice(indexOfFirstQuote, indexOfLastQuote);
 
-    // Cambiar página
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     const formatDate = (mongoDate) => {
@@ -140,8 +138,7 @@ const QuotesView = () => {
                     );
                 })}
             </div>
-            
-            {/* Componente de Paginación */}
+      
             <Pagination
                 quotesPerPage={quotesPerPage}
                 totalQuotes={quotes.length}
@@ -149,7 +146,6 @@ const QuotesView = () => {
                 currentPage={currentPage}
             />
 
-            {/* El modal con los detalles de la cita seleccionada */}
             {selectedQuote && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50">
                     <div className={`p-6 rounded-lg shadow-lg max-w-xl w-full relative z-50 ${selectedColor}`}>
@@ -160,8 +156,6 @@ const QuotesView = () => {
                         />
                         {isEditing ? (
                             <div className="p-4 font-lifeSavers">
-                                {/* Formulario de edición */}
-                                {/* Campos y lógica de edición */}
                             </div>
                         ) : (
                             <CardContent className="p-4 overflow-y-auto max-h-96 font-lifeSavers">
@@ -198,7 +192,6 @@ const QuotesView = () => {
                 </div>
             )}
 
-            {/* Dialog de confirmación de eliminación */}
             {isAlertDialogOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50 font-lifeSavers">
                     <div className="p-6 rounded-lg shadow-lg bg-cream">
