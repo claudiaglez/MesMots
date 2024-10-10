@@ -5,6 +5,7 @@ import { FaTrash, FaPenNib, FaSave } from "react-icons/fa";
 import { IoCloseOutline } from "react-icons/io5";
 import axios from 'axios';
 import { Pagination } from '../../app/ui/pagination';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '../../app/ui/select';
 
 const QuotesView = () => {
     const [quotes, setQuotes] = useState([]);
@@ -38,16 +39,17 @@ const QuotesView = () => {
     const fetchAuthors = async () => {
         try {
             const response = await axios.get('http://127.0.0.1:8000/api/authors');
-            setAuthors(response.data);
+            setAuthors(response.data.flat());  
         } catch (error) {
             console.error("Error fetching authors:", error);
         }
     };
+    
 
     const fetchBooks = async () => {
         try {
             const response = await axios.get('http://127.0.0.1:8000/api/titles');
-            setBooks(response.data);
+            setBooks(response.data.flat());
         } catch (error) {
             console.error("Error fetching books:", error);
         }
@@ -157,28 +159,42 @@ const QuotesView = () => {
         <div className="h-screen flex flex-col">
             <Navbar />
             {/* Filtros por autor y libro */}
+            <div className="h-screen flex flex-col">
+            {/* Filtros por autor y libro */}
             <div className="flex justify-between p-4">
-                <select
-                    onChange={(e) => setSelectedAuthor(e.target.value)}
+                <Select
                     value={selectedAuthor}
-                    className="p-2 border border-gray-300 rounded"
+                    onValueChange={setSelectedAuthor}
+                    className="w-full"
                 >
-                    <option value="">Seleccionar Autor</option>
-                    {authors.map((author, index) => (
-                        <option key={index} value={author}>{author}</option>
-                    ))}
-                </select>
+                    <SelectTrigger className="p-2 border border-gray-300 rounded">
+                        <SelectValue placeholder="Seleccionar Autor" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {authors.map((author, index) => (
+                            <SelectItem key={index} value={author}>
+                                {author}
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
 
-                <select
-                    onChange={(e) => setSelectedBook(e.target.value)}
+                <Select
                     value={selectedBook}
-                    className="p-2 border border-gray-300 rounded"
+                    onValueChange={setSelectedBook}
+                    className="w-full"
                 >
-                    <option value="">Seleccionar Título</option>
-                    {books.map((book, index) => (
-                        <option key={index} value={book}>{book}</option>
-                    ))}
-                </select>
+                    <SelectTrigger className="p-2 border border-gray-300 rounded">
+                        <SelectValue placeholder="Seleccionar Título" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {books.map((book, index) => (
+                            <SelectItem key={index} value={book}>
+                                {book}
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
             </div>
          
             {/* Si no hay citas filtradas, mostramos un mensaje */}
@@ -328,6 +344,7 @@ const QuotesView = () => {
                     <p className="font-lifeSavers">Citation supprimée avec succès!</p>
                 </div>
             )}
+        </div>
         </div>
     );
 };
