@@ -161,40 +161,68 @@ const QuotesView = () => {
             {/* Filtros por autor y libro */}
             <div className="h-screen flex flex-col">
             {/* Filtros por autor y libro */}
-            <div className="flex justify-between p-4">
-                <Select
-                    value={selectedAuthor}
-                    onValueChange={setSelectedAuthor}
-                    className="w-full"
-                >
-                    <SelectTrigger className="p-2 border border-gray-300 rounded">
-                        <SelectValue placeholder="Seleccionar Autor" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        {authors.map((author, index) => (
-                            <SelectItem key={index} value={author}>
-                                {author}
-                            </SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
+            <div className="flex justify-between p-4 w-96 space-x-8">
+            <Select
+    value={selectedAuthor}
+    onValueChange={(value) => {
+        console.log("Selected author changed:", value);  // Mostrar el valor seleccionado
+        if (value === "allAuthors") {
+            setSelectedAuthor(null); // Para mostrar todos los autores
+        } else {
+            setSelectedAuthor(value); // Seleccionar el autor correspondiente
+        }
+    }}
+    className="w-full"
+>
+    <SelectTrigger className="p-4 border-2 border-darkPink rounded-full bg-lightPink font-lifeSavers font-bold text-darkPink">
+        <SelectValue placeholder="Auteurs" />
+    </SelectTrigger>
+    <SelectContent className="bg-lightPink font-lifeSavers font-bold text-darkPink">
+        {/* Opción para mostrar todos los autores */}
+        <SelectItem value="allAuthors">Tous les auteurs</SelectItem>
 
-                <Select
-                    value={selectedBook}
-                    onValueChange={setSelectedBook}
-                    className="w-full"
-                >
-                    <SelectTrigger className="p-2 border border-gray-300 rounded">
-                        <SelectValue placeholder="Seleccionar Título" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        {books.map((book, index) => (
-                            <SelectItem key={index} value={book}>
-                                {book}
-                            </SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
+        {/* Mapear los autores correctamente */}
+        {authors.map((author, index) => {// Acceder correctamente al nombre del autor
+   
+
+            return (
+                <SelectItem key={index} value={author}>
+                {author} {/* Mostramos el nombre del libro */}
+            </SelectItem>
+            );
+        })}
+    </SelectContent>
+</Select>
+
+
+
+
+<Select
+    value={selectedBook}
+    onValueChange={(value) => {
+        if (value === "allBooks") {
+            setSelectedBook(null); // Usamos null para indicar que no hay filtro de libro
+        } else {
+            setSelectedBook(value); // Setea el libro seleccionado
+        }
+    }}
+    className="w-full"
+>
+    <SelectTrigger className="p-4 border-2 border-darkPink rounded-full bg-lightPink font-lifeSavers font-bold text-darkPink">
+        <SelectValue placeholder="Livres" />
+    </SelectTrigger>
+    <SelectContent className="bg-lightPink font-lifeSavers font-bold text-darkPink">
+        {/* Opción para mostrar todos los libros */}
+        <SelectItem value="allBooks">Tous les livres</SelectItem>
+        {books.map((book, index) => (
+            <SelectItem key={index} value={book}>
+                {book} {/* Mostramos el nombre del libro */}
+            </SelectItem>
+        ))}
+    </SelectContent>
+</Select>
+
+
             </div>
          
             {/* Si no hay citas filtradas, mostramos un mensaje */}
