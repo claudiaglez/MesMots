@@ -167,7 +167,7 @@ const QuotesView = () => {
     onValueChange={(value) => {
         console.log("Selected author changed:", value);  // Mostrar el valor seleccionado
         if (value === "allAuthors") {
-            setSelectedAuthor(null); // Para mostrar todos los autores
+            setSelectedAuthor(''); // Para mostrar todos los autores
         } else {
             setSelectedAuthor(value); // Seleccionar el autor correspondiente
         }
@@ -201,7 +201,7 @@ const QuotesView = () => {
     value={selectedBook}
     onValueChange={(value) => {
         if (value === "allBooks") {
-            setSelectedBook(null); // Usamos null para indicar que no hay filtro de libro
+            setSelectedBook(''); // Usamos null para indicar que no hay filtro de libro
         } else {
             setSelectedBook(value); // Setea el libro seleccionado
         }
