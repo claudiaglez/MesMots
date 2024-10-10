@@ -61,7 +61,6 @@ const QuotesView = () => {
         fetchBooks();
     }, []);
 
-    // Filtrado de citas por autor y libro
     const filteredQuotes = quotes.filter((quote) => {
         return (
             (selectedAuthor ? quote.author === selectedAuthor : true) &&
@@ -158,18 +157,16 @@ const QuotesView = () => {
     return (
         <div className="h-screen flex flex-col">
             <Navbar />
-            {/* Filtros por autor y libro */}
             <div className="h-screen flex flex-col">
-            {/* Filtros por autor y libro */}
             <div className="flex justify-between p-4 w-96 space-x-8">
             <Select
     value={selectedAuthor}
     onValueChange={(value) => {
-        console.log("Selected author changed:", value);  // Mostrar el valor seleccionado
+        console.log("Selected author changed:", value);  
         if (value === "allAuthors") {
-            setSelectedAuthor(''); // Para mostrar todos los autores
+            setSelectedAuthor('');
         } else {
-            setSelectedAuthor(value); // Seleccionar el autor correspondiente
+            setSelectedAuthor(value); 
         }
     }}
     className="w-full"
@@ -178,16 +175,12 @@ const QuotesView = () => {
         <SelectValue placeholder="Auteurs" />
     </SelectTrigger>
     <SelectContent className="bg-lightPink font-lifeSavers font-bold text-darkPink">
-        {/* Opción para mostrar todos los autores */}
         <SelectItem value="allAuthors">Tous les auteurs</SelectItem>
 
-        {/* Mapear los autores correctamente */}
-        {authors.map((author, index) => {// Acceder correctamente al nombre del autor
-   
-
+        {authors.map((author, index) => {
             return (
                 <SelectItem key={index} value={author}>
-                {author} {/* Mostramos el nombre del libro */}
+                {author} 
             </SelectItem>
             );
         })}
@@ -201,9 +194,9 @@ const QuotesView = () => {
     value={selectedBook}
     onValueChange={(value) => {
         if (value === "allBooks") {
-            setSelectedBook(''); // Usamos null para indicar que no hay filtro de libro
+            setSelectedBook('');
         } else {
-            setSelectedBook(value); // Setea el libro seleccionado
+            setSelectedBook(value); 
         }
     }}
     className="w-full"
@@ -212,23 +205,19 @@ const QuotesView = () => {
         <SelectValue placeholder="Livres" />
     </SelectTrigger>
     <SelectContent className="bg-lightPink font-lifeSavers font-bold text-darkPink">
-        {/* Opción para mostrar todos los libros */}
         <SelectItem value="allBooks">Tous les livres</SelectItem>
         {books.map((book, index) => (
             <SelectItem key={index} value={book}>
-                {book} {/* Mostramos el nombre del libro */}
+                {book} 
             </SelectItem>
         ))}
     </SelectContent>
 </Select>
-
-
             </div>
          
-            {/* Si no hay citas filtradas, mostramos un mensaje */}
             {filteredQuotes.length === 0 ? (
-                <div className="text-center p-4 text-darkPink font-bold font-lifeSavers">
-                    Oups, nous n'avons pas trouvé cette citation!
+                <div className="text-center p-4 text-darkPink font-bold font-lifeSavers text-4xl mt-6">
+                    Oups, nous n'avons pas trouvé cette citation !
                 </div>
             ) : (
                 <div className={`flex flex-1 justify-center items-center flex-wrap ${selectedQuote ? 'blur-sm' : ''}`}>
@@ -343,7 +332,6 @@ const QuotesView = () => {
                 </div>
             )}
 
-            {/* Dialog de confirmación de eliminación */}
             {isAlertDialogOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50 font-lifeSavers">
                     <div className="p-6 rounded-lg shadow-lg bg-cream">
@@ -366,7 +354,6 @@ const QuotesView = () => {
                 </div>
             )}
 
-            {/* Mensaje de éxito */}
             {isSuccessMessageVisible && (
                 <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white p-4 rounded-lg shadow-lg z-50">
                     <p className="font-lifeSavers">Citation supprimée avec succès!</p>
