@@ -7,13 +7,13 @@ import { Link } from 'react-router-dom';
 const Navbar = () => {
   return (
     <div className="flex flex-row justify-end items-center p-4 space-x-4">
-      <Link to="/"> 
+      <Link to="/" title="Accueil"> 
       <FaHome className="text-blue text-3xl hover:text-lightPink" />
       </Link>
-      <Link to="/phrases"> 
+      <Link to="/phrases" title="Mes phrases"> 
         <Button> mes phrases </Button>
       </Link>
-      <Link to="/ajouter"> 
+      <Link to="/ajouter" title="Ajouter nouvelle phrase"> 
         <Button variant="circle" size="circle"><FiPlus /></Button>
       </Link>
     </div>

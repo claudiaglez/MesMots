@@ -15,12 +15,12 @@ const HomeView = () => {
             </h1>
           </div>
           <div className="flex justify-evenly space-x-4">
-          <Link to="/phrases"> 
+          <Link to="/phrases" title="Mes phrases"> 
             <Button type="submit" variant="default">
               mes phrases
             </Button>
             </Link>
-            <Link to="/ajouter"> 
+            <Link to="/ajouter" title="Ajouter nouvelle phrase"> 
             <Button type="submit" variant="secondary">
               ajouter nouvelle phrase
             </Button>
