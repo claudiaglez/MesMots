@@ -16,7 +16,7 @@ const buttonVariants = cva(
           "bg-blue text-lightPink hover:bg-lightPink hover:text-blue",
         circle: "bg-darkPink text-cream hover:bg-cream/90 hover:text-darkPink hover:bg-lightPink",
         destructive:
-          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+          "bg-red text-cream hover:bg-cream hover:text-red",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {

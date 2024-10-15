@@ -22,6 +22,7 @@ module.exports = {
         lightPink: "#FCE4D8",
         green: "#0CCA4A",
         blue: "#00BFB2",
+        red: "#ea2f1c"
     },
     
     extend: {

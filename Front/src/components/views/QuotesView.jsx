@@ -6,6 +6,7 @@ import { IoCloseOutline } from "react-icons/io5";
 import axios from 'axios';
 import { Pagination } from '../../app/ui/pagination';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '../../app/ui/select';
+import { Button } from '../ui/Button';
 
 const QuotesView = () => {
     const [quotes, setQuotes] = useState([]);
@@ -335,20 +336,22 @@ const QuotesView = () => {
             {isAlertDialogOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50 font-lifeSavers">
                     <div className="p-6 rounded-lg shadow-lg bg-cream">
-                        <h2 className="text-xl mb-4">Êtes-vous sûr de vouloir supprimer cette citation ?</h2>
+                        <h2 className="text-xl mb-4 font-bold">Êtes-vous sûr de vouloir supprimer cette citation ?</h2>
                         <div className="flex justify-end space-x-2">
-                            <button
-                                className="px-4 py-2 bg-gray-500 text-white rounded"
-                                onClick={() => setIsAlertDialogOpen(false)}
-                            >
-                                Annuler
-                            </button>
-                            <button
-                                className="px-4 py-2 bg-red-500 text-white rounded"
-                                onClick={confirmDelete}
-                            >
-                                Supprimer
-                            </button>
+                        <Button
+                variant="secondary" 
+                size="default" 
+                onClick={() => setIsAlertDialogOpen(false)}
+            >
+                Annuler
+            </Button>
+            <Button
+                variant="destructive"
+                size="default"
+                onClick={confirmDelete}
+            >
+                Supprimer
+            </Button>
                         </div>
                     </div>
                 </div>
