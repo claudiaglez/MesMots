@@ -11,7 +11,7 @@ const Router = () => {
     <BrowserRouter>
       <div className="flex flex-col min-h-screen">
         <Navbar />
-        <div className="flex-grow"> 
+        <div className="flex-grow mt-16 overflow-y-auto"> {/* Este margen es igual a la altura de la navbar */}
           <Routes>
             <Route path="/" element={<HomeView />} />
             <Route path="/ajouter" element={<FormView />} />
@@ -25,4 +25,5 @@ const Router = () => {
 };
 
 export default Router;
+
 

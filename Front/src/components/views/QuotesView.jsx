@@ -1,4 +1,3 @@
-import Navbar from "@/app/ui/Navbar";
 import React, { useEffect, useState } from "react";
 import { Card, CardContent, CardFooter } from "../ui/Card";
 import { FaTrash, FaPenNib, FaSave } from "react-icons/fa";
@@ -170,8 +169,8 @@ const QuotesView = () => {
 
   return (
     <div className="h-screen flex flex-col">
-      <div className="h-screen flex flex-col">
-        <div className="flex justify-between p-4 w-96 space-x-8">
+      <div className="flex flex-col flex-1 p-4">
+        <div className="flex justify-between p-4 w-96 space-x-8 pt-8">
           <Select
             value={selectedAuthor}
             onValueChange={(value) => {
