@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   return (
-    <div className="fixed top-0 left-0 w-full flex flex-row justify-end items-center p-4 bg-cream shadow-md z-50 space-x-4">
+    <div className="fixed top-0 left-0 w-full flex flex-row justify-end items-center p-4 bg-cream shadow-darkPink/40 shadow-md z-50 space-x-4">
       <Link to="/" title="Accueil"> 
         <FaHome className="text-blue text-3xl hover:text-lightPink" />
       </Link>
