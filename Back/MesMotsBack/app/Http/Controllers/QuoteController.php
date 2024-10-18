@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Quote; 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class QuoteController extends Controller
 {
@@ -87,6 +88,44 @@ public function destroy($id)
 
     return response()->json(["message" => "Quote not found"], 404);
 }
+
+public function getAuthors()
+{
+    try {
+        // Obtener todos los autores y filtrarlos para eliminar duplicados
+        $authors = Quote::pluck('author')->unique()->filter()->values(); // Pluck obtiene solo el campo 'author'
+        
+        // Log de los autores recuperados
+        Log::info('Authors retrieved:', $authors->toArray());
+        
+        return response()->json($authors);
+    } catch (\Exception $e) {
+        // Manejo de excepciones para ver errores
+        Log::error('Error retrieving authors: '.$e->getMessage());
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+}
+
+
+
+public function getTitles()
+{
+    try {
+        // Obtener todos los autores y filtrarlos para eliminar duplicados
+        $titles = Quote::pluck('title')->unique()->filter()->values(); // Pluck obtiene solo el campo 'author'
+        
+        // Log de los autores recuperados
+        Log::info('Titles retrieved:', $titles->toArray());
+        
+        return response()->json($titles);
+    } catch (\Exception $e) {
+        // Manejo de excepciones para ver errores
+        Log::error('Error retrieving titles: '.$e->getMessage());
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+}
+
+
 
 }
 
