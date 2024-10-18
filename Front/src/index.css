@@ -97,3 +97,16 @@ html, body {
     @apply bg-cream text-foreground font-sans;
   }
 }
+
+html, body, #root {
+  height: 100%; 
+}
+
+#root {
+  @apply flex flex-col; 
+  min-height: 100vh; 
+}
+
+footer {
+  margin-top: auto; 
+}

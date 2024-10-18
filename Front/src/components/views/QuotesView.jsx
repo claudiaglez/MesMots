@@ -170,7 +170,6 @@ const QuotesView = () => {
 
   return (
     <div className="h-screen flex flex-col">
-      <Navbar />
       <div className="h-screen flex flex-col">
         <div className="flex justify-between p-4 w-96 space-x-8">
           <Select
