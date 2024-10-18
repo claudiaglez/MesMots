@@ -5,7 +5,7 @@ const PageLayout = ({ children, breadcrumbItems }) => {
   return (
     <div>
       {/* Breadcrumb */}
-      <Breadcrumb>
+      <Breadcrumb className="mt-16 z-50 ml-8 font-lifeSavers text-darkPink">
         <BreadcrumbList>
           {breadcrumbItems.map((item, index) => (
             <React.Fragment key={index}>

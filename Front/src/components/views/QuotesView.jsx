@@ -12,6 +12,8 @@ import {
   SelectItem,
 } from "../../app/ui/select";
 import { Button } from "../ui/Button";
+import PageLayout from '@/components/ui/PageLayout'; 
+
 
 const QuotesView = () => {
   const [quotes, setQuotes] = useState([]);
@@ -28,6 +30,11 @@ const QuotesView = () => {
   const [selectedBook, setSelectedBook] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const quotesPerPage = 10;
+  const breadcrumbItems = [
+    { label: 'Accueil', href: '/' },
+    { label: 'Phrases', isCurrent: true },
+  ];
+  
 
   const fetchQuotes = async () => {
     try {
@@ -168,6 +175,7 @@ const QuotesView = () => {
   ];
 
   return (
+    <PageLayout breadcrumbItems={breadcrumbItems}>
     <div className="h-screen flex flex-col">
       <div className="flex flex-col flex-1 p-4">
         <div className="flex justify-between p-4 w-96 space-x-8 pt-8">
@@ -393,6 +401,7 @@ const QuotesView = () => {
         )}
       </div>
     </div>
+    </PageLayout>
   );
 };
 
