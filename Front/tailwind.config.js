@@ -71,6 +71,9 @@ module.exports = {
           foreground: "hsl(var(--card-foreground))",
         },
       },
+      boxShadow: {
+        'darkPink': '0 4px 15px rgba(255, 20, 147, 0.5)', 
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
