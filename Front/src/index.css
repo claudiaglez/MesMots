@@ -110,3 +110,23 @@ html, body, #root {
 footer {
   margin-top: auto; 
 }
+
+/* Estilos para la barra de desplazamiento */
+::-webkit-scrollbar {
+  width: 9px; /* Ancho de la barra de desplazamiento */
+}
+
+::-webkit-scrollbar-track {
+  background: #FCE4D8; /* Color de la pista */
+  border-radius: 10px; /* Esquinas redondeadas */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #F75590; /* Color del "pulgar" de la barra */
+  border-radius: 10px; /* Esquinas redondeadas */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00BFB2; /* Color del "pulgar" al pasar el ratón */
+}
+
