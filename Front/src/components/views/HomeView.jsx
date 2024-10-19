@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const HomeView = () => {
   return (
-    <div className="flex flex-col justify-center items-center flex-grow pt-64"> 
+    <div className="flex flex-col justify-center items-center flex-grow pt-48"> 
       <div className='flex flex-col items-center justify-center space-y-6'>
         <h1 className='text-4xl sm:text-6xl md:text-8xl font-lifeSavers text-darkPink text-center'>
           mes mots
