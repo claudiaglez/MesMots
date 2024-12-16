@@ -119,6 +119,12 @@ return [
         'database' => 'mesMots',
 ],
 
+    'mongodb_testing' => [
+        'driver' => 'mongodb',
+        'dsn' => env('MONGODB_TEST_URI', 'mongodb+srv://claudiaglezg:naranja07@cluster0.7mbathm.mongodb.net/?retryWrites=true&w=majority'),
+        'database' => env('DB_DATABASE', 'mesMotsTest'),
+],
+
 
 
     ],
