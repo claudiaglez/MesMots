@@ -6,7 +6,4 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'UpdateHelper\\' => array($vendorDir . '/kylekatarnls/update-helper/src'),
-    'Jenssegers\\Mongodb' => array($vendorDir . '/jenssegers/mongodb/src'),
-    'Jenssegers\\Eloquent' => array($vendorDir . '/jenssegers/mongodb/src'),
 );
