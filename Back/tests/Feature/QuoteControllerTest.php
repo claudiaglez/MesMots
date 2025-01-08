@@ -49,30 +49,32 @@ class QuoteControllerTest extends TestCase
 
     public function test_it_creates_a_quote()
     {
-        // Datos para la nueva cita
-        $quoteData = [
-            'author' => 'Bécquer',
-            'title' => 'Poemas',
-            'phrase' => 'Volverán las oscuras golondrinas',
-            'date' => now(),  // Utiliza la fecha y hora actual
+        // Datos simulados para la solicitud
+        $data = [
+            'author' => 'Test Author',
+            'title' => 'Test Title',
+            'phrase' => 'This is a test phrase.',
         ];
-
-        // Realiza una solicitud para crear la cita
-        $response = $this->postJson(route('quote.store'), $quoteData);
-
-        // Verifica que la respuesta sea exitosa (201 Created)
+    
+        // Realizar una solicitud POST al endpoint
+        $response = $this->postJson(route('quote.store'), $data);
+    
+        // Verificar que la respuesta tenga el código 201
         $response->assertStatus(201);
+    
+        // Verificar el mensaje de la respuesta
+        $response->assertJson([
+            "result" => "Quote created",
+        ]);
+    
+        // Verificar que los datos se guardaron en la base de datos MongoDB
+        $quote = \App\Models\Quote::where('author', 'Test Author')->where('phrase', 'This is a test phrase.')->first();
+    
+        $this->assertNotNull($quote, 'Quote not found in the database');
+        $this->assertEquals('Test Author', $quote->author);
+        $this->assertEquals('This is a test phrase.', $quote->phrase);
+}
 
-        // Verifica que el registro se haya creado en la base de datos
-        $this->assertTrue(
-            DB::connection('mongodb_testing')->collection('quotes')->where('author', 'Bécquer')->exists()
-        );
-
-        // Verifica que el campo 'date' esté cerca del valor actual
-        $this->assertTrue(
-            DB::connection('mongodb_testing')->collection('quotes')->where('date', '>=', now()->subMinutes(1)->toDateTimeString())->exists()
-        );
-    }
 }
 
 
