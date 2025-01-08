@@ -13,11 +13,11 @@ class QuoteController extends Controller
     {
         $quote = Quote::find($id);
     
-        if ($quote) {
-            return view('quote', ['quote' => $quote]);
+        if (!$quote) {
+            return response()->json(['message' => 'Quote not found'], 404);
         }
     
-        return response()->json(["message" => "Quote not found"], 404);
+        return response()->json($quote, 200);
     }
 
     public function index()
