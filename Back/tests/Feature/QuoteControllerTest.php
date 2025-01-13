@@ -6,28 +6,29 @@ use App\Models\Quote;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class QuoteControllerTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function setUp(): void
-{
-    parent::setUp();
+    {
+        parent::setUp();
 
-    // Verificar la conexión de base de datos de pruebas
-    $databaseName = DB::connection('mongodb_testing')->getDatabaseName();
-    Log::info('Using database for tests:', [$databaseName]);
+        // Verificar la conexión de base de datos de pruebas
+        $databaseName = DB::connection('mongodb_testing')->getDatabaseName();
+        Log::info('Using database for tests:', [$databaseName]);
 
-    // Limpia la colección de 'quotes' en MongoDB
-    $database = DB::connection('mongodb_testing')->getMongoDB();
-    $collections = $database->listCollections(['name' => 'quotes']);
-    
-    // Convertir el CachingIterator a un arreglo con iterator_to_array
-    if (iterator_to_array($collections)) {
-        $database->dropCollection('quotes');
+        // Limpia la colección de 'quotes' en MongoDB
+        $database = DB::connection('mongodb_testing')->getMongoDB();
+        $collections = $database->listCollections(['name' => 'quotes']);
+
+        // Convertir el CachingIterator a un arreglo con iterator_to_array
+        if (iterator_to_array($collections)) {
+            $database->dropCollection('quotes');
+        }
     }
-}
-
-    
 
     public function test_it_shows_a_quote_when_exists()
     {
@@ -55,26 +56,79 @@ class QuoteControllerTest extends TestCase
             'title' => 'Test Title',
             'phrase' => 'This is a test phrase.',
         ];
-    
+
         // Realizar una solicitud POST al endpoint
         $response = $this->postJson(route('quote.store'), $data);
-    
+
         // Verificar que la respuesta tenga el código 201
         $response->assertStatus(201);
-    
+
         // Verificar el mensaje de la respuesta
         $response->assertJson([
             "result" => "Quote created",
         ]);
-    
+
         // Verificar que los datos se guardaron en la base de datos MongoDB
         $quote = \App\Models\Quote::where('author', 'Test Author')->where('phrase', 'This is a test phrase.')->first();
-    
+
         $this->assertNotNull($quote, 'Quote not found in the database');
         $this->assertEquals('Test Author', $quote->author);
         $this->assertEquals('This is a test phrase.', $quote->phrase);
+    }
+
+    public function test_it_edits_a_quote()
+{
+    // Crear una cita original
+    $quote = Quote::create([
+        'author' => 'Original Author',
+        'title' => 'Original Title',
+        'phrase' => 'Original phrase.',
+        'date' => now(),
+    ]);
+
+    // Verificar que el ID de la cita se haya generado y no sea nulo
+    $this->assertNotNull($quote->id);
+    echo $quote->id;
+
+    // Verificar que la cita existe en la base de datos usando el modelo
+    $foundQuote = Quote::find($quote->id);
+    $this->assertNotNull($foundQuote, 'The quote was not found in the database.');
+
+    // Datos actualizados para la cita
+    $data = [
+        'author' => 'Updated Author',
+        'title' => 'Updated Title',
+        'phrase' => 'Updated phrase',
+    ];
+
+    // Realizar una solicitud PUT para editar la cita
+    $response = $this->putJson(route('quote.update', ['id' => $quote->id]), $data);
+
+    // Verificar que la respuesta sea exitosa (200 OK)
+    $response->assertStatus(200);
+
+    // Verificar que el mensaje de respuesta sea correcto
+    $response->assertJson([
+        'result' => 'Quote updated',
+    ]);
+
+    // Refrescar la cita para obtener los datos actualizados
+    $quote->refresh();
+
+    // Verificar que los datos se hayan actualizado correctamente
+    $this->assertEquals('Updated Author', $quote->author);
+    $this->assertEquals('Updated Title', $quote->title);
+    $this->assertEquals('Updated phrase', $quote->phrase);
+
+    // Verificar que el registro sigue existiendo en la base de datos
+    $updatedQuote = Quote::find($quote->id);
+    $this->assertEquals('Updated Author', $updatedQuote->author);
+    $this->assertEquals('Updated Title', $updatedQuote->title);
+    $this->assertEquals('Updated phrase', $updatedQuote->phrase);
 }
 
+
+
+    
+
 }
-
-
