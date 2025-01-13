@@ -211,5 +211,50 @@ public function test_index_returns_quotes_in_correct_format()
         ]);
 }
 
+public function test_get_authors_returns_unique_authors()
+{
+    // Verificar cuántos documentos hay antes de la prueba
+    $countBefore = \App\Models\Quote::count();
+    Log::info('Quotes count before test: ' . $countBefore);
+
+    // Limpiar la colección de citas antes de la prueba
+    \App\Models\Quote::query()->delete();
+
+    // Insertar los datos de prueba
+    Quote::create([
+        'author' => 'Author 1',
+        'phrase' => 'Phrase 1',
+        'title' => 'Title 1',
+    ]);
+    Quote::create([
+        'author' => 'Author 2',
+        'phrase' => 'Phrase 2',
+        'title' => 'Title 2',
+    ]);
+    Quote::create([
+        'author' => 'Author 1',
+        'phrase' => 'Phrase 3',
+        'title' => 'Title 3',
+    ]);
+
+    // Realizamos la solicitud GET
+    $response = $this->getJson(route('quote.authors'));
+
+    // Verificamos el estado de la respuesta
+    $response->assertStatus(200);
+
+    // Obtener autores de la respuesta
+    $authors = $response->json();
+
+    // Verificar cuántos documentos hay después de la inserción
+    $countAfter = \App\Models\Quote::count();
+    Log::info('Quotes count after test: ' . $countAfter);
+
+    // Verificar que haya solo 2 autores únicos
+    $this->assertCount(2, $authors);
+    $this->assertEquals(['Author 1', 'Author 2'], $authors);
+}
+
+
 
 }
