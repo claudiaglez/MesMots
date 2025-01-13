@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Carbon\Carbon;
 
 class QuoteControllerTest extends TestCase
 {
@@ -255,6 +256,34 @@ public function test_get_authors_returns_unique_authors()
     $this->assertEquals(['Author 1', 'Author 2'], $authors);
 }
 
+public function test_store_assigns_date_automatically()
+{
+    // Datos de prueba sin incluir la fecha
+    $data = [
+        'author' => 'Albert Einstein',
+        'phrase' => 'Imagination is more important than knowledge.',
+        'title' => 'Science',
+    ];
+
+    // Realizar la solicitud POST para crear la cita
+    $response = $this->postJson(route('quote.store'), $data);
+
+    // Verificar que la respuesta tenga un código 201 (creado)
+    $response->assertStatus(201);
+
+    // Obtener el registro de la base de datos
+    $quote = Quote::where('author', $data['author'])->first();
+
+    // Verificar que el registro exista
+    $this->assertNotNull($quote, 'The quote should exist in the database.');
+
+    // Asegurarse de que la fecha no sea nula y esté en el formato esperado
+    $this->assertNotNull($quote->date, 'The date field should not be null.');
+    $this->assertTrue(
+        Carbon::hasFormat($quote->date, 'Y-m-d H:i:s'),
+        'The date field does not match the expected format.'
+    );
+}
 
 
 }
