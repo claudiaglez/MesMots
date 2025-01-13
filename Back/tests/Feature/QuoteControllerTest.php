@@ -194,6 +194,22 @@ public function test_store_creates_quote_without_title()
     $this->assertNull($quote->title, 'The title field should be null.');
 }
 
+public function test_index_returns_quotes_in_correct_format()
+{
+    Quote::factory()->create([
+        'author' => 'Mark Twain',
+        'phrase' => 'The secret of getting ahead is getting started.',
+        'title' => 'Motivation',
+        'date' => now(),
+    ]);
+
+    $response = $this->getJson(route('quote.index'));
+
+    $response->assertStatus(200)
+        ->assertJsonStructure([
+            '*' => ['id', 'author', 'phrase', 'title', 'date'],
+        ]);
+}
 
 
 }
