@@ -127,6 +127,37 @@ class QuoteControllerTest extends TestCase
     $this->assertEquals('Updated phrase', $updatedQuote->phrase);
 }
 
+public function test_it_deletes_a_quote()
+{
+    // Crear una cita en la base de datos
+    $quote = Quote::create([
+        'author' => 'Author to delete',
+        'title' => 'Title to delete',
+        'phrase' => 'Phrase to delete.',
+        'date' => now(),
+    ]);
+
+    // Verificar que la cita fue creada correctamente
+    $this->assertNotNull($quote->id);
+    $foundQuote = Quote::find($quote->id);
+    $this->assertNotNull($foundQuote, 'The quote was not found in the database.');
+
+    // Realizar una solicitud DELETE para eliminar la cita
+    $response = $this->deleteJson(route('quote.destroy', ['id' => $quote->id]));
+
+    // Verificar que la respuesta sea exitosa (200 OK)
+    $response->assertStatus(200);
+
+    // Verificar que el mensaje de respuesta sea correcto
+    $response->assertJson([
+        'result' => 'Quote deleted',
+    ]);
+
+    // Verificar que la cita ya no exista en la base de datos
+    $deletedQuote = Quote::find($quote->id);
+    $this->assertNull($deletedQuote, 'The quote was not deleted from the database.');
+}
+
 
 
     
