@@ -168,7 +168,32 @@ public function test_it_validates_required_fields_on_create()
     $response->assertJsonValidationErrors(['author', 'phrase']);
 }
 
+public function test_store_creates_quote_without_title()
+{
+    // Datos de prueba sin título
+    $data = [
+        'author' => 'Jane Austen',
+        'phrase' => 'It is a truth universally acknowledged.',
+    ];
 
-    
+    // Realizar la solicitud POST para crear la cita
+    $response = $this->postJson(route('quote.store'), $data);
+
+    // Verificar que la respuesta tenga un código 201 (creado)
+    $response->assertStatus(201);
+
+    // Buscar el registro en la base de datos usando el modelo
+    $quote = Quote::where('author', $data['author'])
+                  ->where('phrase', $data['phrase'])
+                  ->first();
+
+    // Verificar que el registro existe
+    $this->assertNotNull($quote, 'The quote should exist in the database.');
+
+    // Asegurarse de que el título es null
+    $this->assertNull($quote->title, 'The title field should be null.');
+}
+
+
 
 }
