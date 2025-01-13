@@ -328,5 +328,17 @@ public function test_show_returns_correct_json_format()
     ]);
 }
 
+public function test_index_returns_empty_array_when_no_quotes()
+{
+    // Realiza la petición GET al endpoint de index
+    $response = $this->getJson(route('quote.index'));
+
+    // Verifica que la respuesta sea exitosa (código 200)
+    $response->assertStatus(200);
+
+    // Verifica que la respuesta sea un array vacío
+    $response->assertJson([]); // Espera un array vacío
+}
+
 
 }
