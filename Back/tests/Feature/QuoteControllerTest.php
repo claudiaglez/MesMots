@@ -89,7 +89,6 @@ class QuoteControllerTest extends TestCase
 
     // Verificar que el ID de la cita se haya generado y no sea nulo
     $this->assertNotNull($quote->id);
-    echo $quote->id;
 
     // Verificar que la cita existe en la base de datos usando el modelo
     $foundQuote = Quote::find($quote->id);
@@ -338,6 +337,18 @@ public function test_index_returns_empty_array_when_no_quotes()
 
     // Verifica que la respuesta sea un array vacío
     $response->assertJson([]); // Espera un array vacío
+}
+
+public function test_update_returns_404_if_quote_not_found()
+{
+     $response = $this->putJson(route('quote.update', ['id' => 99999]), [
+        'author' => 'Updated Author',
+        'title' => 'Updated Title',
+        'phrase' => 'Updated phrase',
+    ]);
+
+    $response->assertStatus(404);
+    $response->assertJson(['message' => 'Quote not found']);
 }
 
 
