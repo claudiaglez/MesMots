@@ -285,5 +285,48 @@ public function test_store_assigns_date_automatically()
     );
 }
 
+public function test_show_returns_correct_json_format()
+{
+    // Crear la cita
+    $quote = Quote::create([
+        'author' => 'Jane Austen',
+        'title' => 'Pride and Prejudice',
+        'phrase' => 'It is a truth universally acknowledged...',
+        'date' => now(),  // O una fecha fija si es necesario
+    ]);
+
+    // Realizar la solicitud GET
+    $response = $this->getJson(route('quote.show', $quote->id));
+
+    // Asegúrate de que la respuesta tenga el formato correcto
+    $response->assertStatus(200);
+
+    // Obtener la respuesta JSON
+    $responseJson = $response->json();
+
+    // Verificar si la respuesta es un arreglo
+    if (isset($responseJson[0])) {
+        // Si es un arreglo, toma la primera cita
+        $actualDate = substr($responseJson[0]['date'], 0, 19);  // Truncamos a 'YYYY-MM-DDTHH:MM:SS'
+    } else {
+        // Si no es un arreglo, accede directamente al objeto
+        $actualDate = substr($responseJson['date'], 0, 19);
+    }
+
+    // Fecha esperada truncada
+    $expectedDate = $quote->date->format('Y-m-d\TH:i:s');  // Fecha esperada truncada
+
+    // Asegúrate de que la fecha en la respuesta coincida con la esperada
+    $this->assertEquals($expectedDate, $actualDate);
+
+    // Asegúrate de que los demás datos estén correctos
+    $response->assertJsonFragment([
+        'id' => $quote->id,
+        'author' => 'Jane Austen',
+        'title' => 'Pride and Prejudice',
+        'phrase' => 'It is a truth universally acknowledged...',
+    ]);
+}
+
 
 }
