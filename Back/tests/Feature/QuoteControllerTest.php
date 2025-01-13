@@ -158,6 +158,15 @@ public function test_it_deletes_a_quote()
     $this->assertNull($deletedQuote, 'The quote was not deleted from the database.');
 }
 
+public function test_it_validates_required_fields_on_create()
+{
+    $data = []; // Sin datos
+
+    $response = $this->postJson(route('quote.store'), $data);
+
+    $response->assertStatus(422); // Código para errores de validación
+    $response->assertJsonValidationErrors(['author', 'phrase']);
+}
 
 
     
