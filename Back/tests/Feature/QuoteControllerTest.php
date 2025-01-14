@@ -365,7 +365,7 @@ public function test_getAuthors_success()
     $response->assertJson(['Author 1', 'Author 2']);
 }
 
-public function test_GetTitles_success()
+public function test_getTitles_success()
 {
     Quote::create(['author' => 'Author 1', 'title' => 'Title 1', 'phrase' => 'Phrase 1']);
     Quote::create(['author' => 'Author 2', 'title' => 'Title 2', 'phrase' => 'Phrase 2']);
@@ -373,7 +373,7 @@ public function test_GetTitles_success()
     $response = $this->getJson('/api/titles'); 
 
     $response->assertStatus(200);
-    
+
     $response->assertJson(['Title 1', 'Title 2']);
 }
 
