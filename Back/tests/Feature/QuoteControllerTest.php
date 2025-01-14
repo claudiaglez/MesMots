@@ -411,5 +411,18 @@ public function test_get_authors_returns_empty_array_if_no_quotes()
     $response->assertJson([]);
 }
 
+public function test_get_titles_returns_empty_array_if_no_quotes()
+{
+    // Asegúrate de que no haya datos en la base de datos
+    Quote::query()->delete(); // Borra todas las citas si existen
+
+    // Realizar una solicitud GET para obtener los títulos
+    $response = $this->getJson(route('quote.titles'));
+
+    // Verificar que la respuesta sea un array vacío
+    $response->assertStatus(200);
+    $response->assertJson([]);
+}
+
 
 }
