@@ -398,5 +398,18 @@ public function test_destroy_returns_404_if_quote_not_found()
     ]);
 }
 
+public function test_get_authors_returns_empty_array_if_no_quotes()
+{
+    // Asegúrate de que no haya datos en la base de datos
+    Quote::query()->delete(); // Borra todas las citas si existen
+
+    // Realizar una solicitud GET para obtener los autores
+    $response = $this->getJson(route('quote.authors'));
+
+    // Verificar que la respuesta sea un array vacío
+    $response->assertStatus(200);
+    $response->assertJson([]);
+}
+
 
 }
