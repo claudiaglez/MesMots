@@ -351,5 +351,34 @@ public function test_update_returns_404_if_quote_not_found()
     $response->assertJson(['message' => 'Quote not found']);
 }
 
+public function test_update_does_not_change_fields_not_provided()
+{
+    // Crear una cita original
+    $quote = Quote::create([
+        'author' => 'Original Author',
+        'title' => 'Original Title',
+        'phrase' => 'Original phrase.',
+        'date' => now(),
+    ]);
+
+    // Realizar una solicitud PUT para actualizar solo el autor
+    $response = $this->putJson(route('quote.update', ['id' => $quote->id]), [
+        'author' => 'Updated Author',
+    ]);
+
+    // Verificar que la respuesta sea exitosa
+    $response->assertStatus(200);
+    $response->assertJson([
+        'result' => 'Quote updated',
+    ]);
+
+    // Verificar que los campos omitidos sean sobrescritos como null
+    $this->assertDatabaseHas('quotes', [
+        '_id' => $quote->id,
+        'author' => 'Updated Author',
+        'title' => null, // Sobrescrito como null
+        'phrase' => null, // Sobrescrito como null
+    ]);
+}
 
 }
