@@ -381,4 +381,22 @@ public function test_update_does_not_change_fields_not_provided()
     ]);
 }
 
+public function test_destroy_returns_404_if_quote_not_found()
+{
+    // ID de una cita que no existe
+    $nonExistentId = '64b6f7a5643b2a0010e53a9c';
+
+    // Realizar una solicitud DELETE con el ID inexistente
+    $response = $this->deleteJson(route('quote.destroy', ['id' => $nonExistentId]));
+
+    // Verificar que la respuesta sea un error 404
+    $response->assertStatus(404);
+
+    // Verificar el contenido de la respuesta JSON
+    $response->assertJson([
+        'message' => 'Quote not found',
+    ]);
+}
+
+
 }
