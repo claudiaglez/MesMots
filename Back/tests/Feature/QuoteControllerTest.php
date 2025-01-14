@@ -424,5 +424,21 @@ public function test_get_titles_returns_empty_array_if_no_quotes()
     $response->assertJson([]);
 }
 
+public function testGetAuthorsSuccess()
+{
+    // Crear citas de prueba
+    Quote::create(['author' => 'Author 1', 'title' => 'Title 1', 'phrase' => 'Phrase 1']);
+    Quote::create(['author' => 'Author 2', 'title' => 'Title 2', 'phrase' => 'Phrase 2']);
+
+    // Realizar la petición GET
+    $response = $this->getJson('/api/authors'); // Ajusta la ruta según corresponda
+
+    // Verificar que la respuesta es exitosa
+    $response->assertStatus(200);
+
+    // Verificar que los autores estén presentes en la respuesta
+    $response->assertJson(['Author 1', 'Author 2']);
+}
+
 
 }
