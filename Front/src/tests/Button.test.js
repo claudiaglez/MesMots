@@ -8,8 +8,15 @@ describe("Button Component", () => {
 
     const button = screen.getByText("Click me");
 
-    // Verifica que el botón tiene la clase predeterminada
     expect(button).toHaveClass("bg-green", "text-lightPink");
     expect(button).toHaveClass("hover:bg-lightPink/90", "hover:text-green");
+  });
+
+  it("should render with custom size", () => {
+    render(<Button size="lg">Large Button</Button>);
+
+    const button = screen.getByText("Large Button");
+
+    expect(button).toHaveClass("h-11", "px-8");
   });
   });
