@@ -58,5 +58,14 @@ describe("Button Component", () => {
     expect(button).toHaveClass("hover:bg-darkPink", "hover:text-cream");
   });
   
+  it("should be disabled when 'disabled' is true", () => {
+    render(<Button disabled>Disabled Button</Button>);
+  
+    const button = screen.getByText("Disabled Button");
+  
+    expect(button).toHaveClass("disabled:pointer-events-none", "disabled:opacity-50");
+    expect(button).toBeDisabled(); 
+  });
+  
 
   });
