@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { Button } from "../components/ui/Button"; 
 
 describe("Button Component", () => {
@@ -66,6 +66,17 @@ describe("Button Component", () => {
     expect(button).toHaveClass("disabled:pointer-events-none", "disabled:opacity-50");
     expect(button).toBeDisabled(); 
   });
+
+  it("should trigger onClick event when clicked", () => {
+    const handleClick = jest.fn();
+    render(<Button onClick={handleClick}>Click me</Button>);
+  
+    const button = screen.getByText("Click me");
+    fireEvent.click(button);
+  
+    expect(handleClick).toHaveBeenCalledTimes(1); 
+  });
+  
   
 
   });
