@@ -19,4 +19,15 @@ describe("Button Component", () => {
 
     expect(button).toHaveClass("h-11", "px-8");
   });
+
+  it("should apply the 'secondary' variant", () => {
+    render(<Button variant="secondary">Secondary Button</Button>);
+
+    const button = screen.getByText("Secondary Button");
+
+    expect(button).toHaveClass("bg-blue", "text-lightPink");
+    expect(button).toHaveClass("hover:bg-lightPink", "hover:text-blue");
+  });
+
+
   });
