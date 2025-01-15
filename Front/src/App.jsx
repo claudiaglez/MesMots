@@ -1,6 +1,6 @@
+import React from 'react'
 import './App.css'
 import { Button } from './components/ui/Button'
-<<<<<<< HEAD
 import {
   Card,
   CardContent,
@@ -8,8 +8,6 @@ import {
   CardHeader,
 } from "@/components/ui/Card"
 
-=======
->>>>>>> 9a120aab0322d2085a1bfceece46515f85fb2a70
 function App() {
 
   return (
