@@ -29,5 +29,16 @@ describe("Button Component", () => {
     expect(button).toHaveClass("hover:bg-lightPink", "hover:text-blue");
   });
 
+  it("should render as a 'Slot' when 'asChild' is true", () => {
+    render(
+      <Button asChild={true}>
+        <a href="#">As a link</a>
+      </Button>
+    );
+
+    const link = screen.getByText("As a link");
+
+    expect(link.tagName).toBe("A");
+  });
 
   });
