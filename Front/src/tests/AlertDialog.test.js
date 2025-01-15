@@ -53,3 +53,28 @@ it('AlertDialog triggers action when Accept is clicked', async () => {
     fireEvent.click(screen.getByText('Accept'));
     expect(onAccept).toHaveBeenCalledTimes(1);
   });
+
+  it('AlertDialog can be canceled when Cancel is clicked', async () => {
+    const onCancel = jest.fn();
+  
+    render(
+      <AlertDialog>
+        <AlertDialogTrigger asChild>
+          <button>Open Dialog</button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogTitle>Alert Title</AlertDialogTitle>
+          <AlertDialogDescription>This is the alert description.</AlertDialogDescription>
+          <AlertDialogAction>Accept</AlertDialogAction>
+          <AlertDialogCancel onClick={onCancel}>Cancel</AlertDialogCancel>
+        </AlertDialogContent>
+      </AlertDialog>
+    );
+
+    fireEvent.click(screen.getByText('Open Dialog'));
+
+    expect(screen.getByText('Cancel')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByText('Cancel'));
+    expect(onCancel).toHaveBeenCalledTimes(1);
+  });
