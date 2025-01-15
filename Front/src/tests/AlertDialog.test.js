@@ -17,18 +17,39 @@ it('AlertDialog renders and can be triggered', async () => {
     </AlertDialog>
   );
 
-  // Verificar que el dialogo no es visible inicialmente
   expect(screen.queryByText('Alert Title')).not.toBeInTheDocument();
 
-  // Hacer clic en el botón para abrir el dialogo
   fireEvent.click(screen.getByText('Open Dialog'));
 
-  // Verificar que el dialogo es visible
   await waitFor(() => screen.getByText('Alert Title'));
   expect(screen.getByText('Alert Title')).toBeInTheDocument();
   expect(screen.getByText('This is the alert description.')).toBeInTheDocument();
 
-  // Verificar que los botones de acción están presentes
   expect(screen.getByText('Accept')).toBeInTheDocument();
   expect(screen.getByText('Cancel')).toBeInTheDocument();
 });
+
+it('AlertDialog triggers action when Accept is clicked', async () => {
+    const onAccept = jest.fn();
+  
+    render(
+      <AlertDialog>
+        <AlertDialogTrigger asChild>
+          <button>Open Dialog</button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogTitle>Alert Title</AlertDialogTitle>
+          <AlertDialogDescription>This is the alert description.</AlertDialogDescription>
+          <AlertDialogAction onClick={onAccept}>Accept</AlertDialogAction>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+        </AlertDialogContent>
+      </AlertDialog>
+    );
+
+    fireEvent.click(screen.getByText('Open Dialog'));
+
+    expect(screen.getByText('Accept')).toBeInTheDocument();
+  
+    fireEvent.click(screen.getByText('Accept'));
+    expect(onAccept).toHaveBeenCalledTimes(1);
+  });
