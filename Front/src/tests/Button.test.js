@@ -41,4 +41,12 @@ describe("Button Component", () => {
     expect(link.tagName).toBe("A");
   });
 
+  it("should render with a circle size", () => {
+    render(<Button size="circle">Circle Button</Button>);
+
+    const button = screen.getByText("Circle Button");
+
+    expect(button).toHaveClass("h-12", "w-12", "rounded-full");
+  });
+
   });
