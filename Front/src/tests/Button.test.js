@@ -49,4 +49,14 @@ describe("Button Component", () => {
     expect(button).toHaveClass("h-12", "w-12", "rounded-full");
   });
 
+  it("should apply the 'filter' variant", () => {
+    render(<Button variant="filter">Filter Button</Button>);
+  
+    const button = screen.getByText("Filter Button");
+  
+    expect(button).toHaveClass("border-2", "border-darkPink", "text-darkPink", "bg-cream");
+    expect(button).toHaveClass("hover:bg-darkPink", "hover:text-cream");
+  });
+  
+
   });
