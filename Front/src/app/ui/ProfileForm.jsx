@@ -94,7 +94,7 @@ export function ProfileForm() {
                     />
                   </FormControl>
                 </div>
-                <FormMessage />
+                <FormMessage message={form.formState.errors.auteur?.message} />
               </FormItem>
             )}
           />
@@ -117,7 +117,7 @@ export function ProfileForm() {
                     />
                   </FormControl>
                 </div>
-                <FormMessage />
+                <FormMessage message={form.formState.errors.livre?.message} />
               </FormItem>
             )}
           />
@@ -140,7 +140,7 @@ export function ProfileForm() {
                     />
                   </FormControl>
                 </div>
-                <FormMessage />
+                <FormMessage message={form.formState.errors.phrase?.message} />
               </FormItem>
             )}
           />

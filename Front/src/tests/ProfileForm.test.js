@@ -1,23 +1,31 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { userEvent } from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
 import { ProfileForm } from './../app/ui/ProfileForm';
 
-// Mock useNavigate
 const mockNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useNavigate: () => mockNavigate,
 }));
 
-// Mock useForm
 jest.mock('react-hook-form', () => ({
   ...jest.requireActual('react-hook-form'),
   useForm: () => ({
-    handleSubmit: (fn) => fn,
+    handleSubmit: (fn) => (e) => {
+      e.preventDefault(); 
+      fn({ auteur: '', livre: '', phrase: '' }); 
+    },
     control: {},
     reset: jest.fn(),
-    formState: { errors: {} },
+    formState: {
+      errors: {
+        auteur: { message: "L'auteur doit contenir au moins 2 caractères." },
+        livre: { message: "Le titre du livre doit contenir au moins 2 caractères." },
+        phrase: { message: "La citation doit contenir au moins 5 caractères." },
+      },
+    },
     register: jest.fn(),
     setValue: jest.fn(),
     getValues: jest.fn(),
@@ -30,7 +38,6 @@ jest.mock('react-hook-form', () => ({
   }),
 }));
 
-// Mock componentes UI
 jest.mock('@/components/ui/Button', () => ({
   Button: function Button({ children }) { 
     return <button>{children}</button>; 
@@ -64,8 +71,8 @@ jest.mock('@/app/ui/form', () => ({
   FormLabel: function FormLabel({ htmlFor, children }) { 
     return <label htmlFor={htmlFor}>{children}</label>; 
   },
-  FormMessage: function FormMessage() { 
-    return null; 
+  FormMessage: function FormMessage({ message }) { 
+    return <div>{message}</div>; 
   },
 }));
 
@@ -113,4 +120,22 @@ describe('ProfileForm', () => {
     expect(screen.getByRole('button', { name: /Ajouter/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Arrière/i })).toBeInTheDocument();
   });
-});
+
+  it('validates required fields', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <BrowserRouter>
+        <ProfileForm />
+      </BrowserRouter>
+    );
+
+    const submitButton = screen.getByRole('button', { name: /ajouter/i });
+    await user.click(submitButton);
+
+    expect(await screen.findByText("L'auteur doit contenir au moins 2 caractères.")).toBeInTheDocument();
+    expect(await screen.findByText("Le titre du livre doit contenir au moins 2 caractères.")).toBeInTheDocument();
+    expect(await screen.findByText("La citation doit contenir au moins 5 caractères.")).toBeInTheDocument();
+  });
+  });
+
