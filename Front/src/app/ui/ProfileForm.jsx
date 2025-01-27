@@ -1,9 +1,9 @@
+import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"; 
-
 import { Button } from "@/components/ui/Button";
 import {
   Form,
@@ -81,9 +81,13 @@ export function ProfileForm() {
             render={({ field }) => (
               <FormItem className="space-y-4">
                 <div>
-                  <FormLabel className="font-lifeSavers font-extrabold text-lg text-lightPink">Auteur/ice</FormLabel>
+                  <FormLabel 
+                  htmlFor="auteur"
+                  className="font-lifeSavers font-extrabold text-lg text-lightPink">Auteur/ice
+                  </FormLabel>
                   <FormControl>
                     <Input
+                      id="auteur"
                       placeholder="Écrire le nom de l'auteur"
                       {...field}
                       className="w-full font-lifeSavers mt-3 bg-lightPink"
@@ -100,9 +104,13 @@ export function ProfileForm() {
             render={({ field }) => (
               <FormItem className="space-y-4">
                 <div>
-                  <FormLabel className="font-lifeSavers font-extrabold text-lg text-lightPink">Livre</FormLabel>
+                  <FormLabel 
+                  htmlFor="livre" 
+                  className="font-lifeSavers font-extrabold text-lg text-lightPink">Livre
+                  </FormLabel>
                   <FormControl>
                     <Input
+                      id="livre"
                       placeholder="Écrire le titre du livre"
                       {...field}
                       className="w-full font-lifeSavers mt-3 bg-lightPink"
@@ -119,9 +127,13 @@ export function ProfileForm() {
             render={({ field }) => (
               <FormItem className="space-y-4">
                 <div>
-                  <FormLabel className="font-lifeSavers font-extrabold text-lg text-lightPink">Phrase</FormLabel>
+                  <FormLabel 
+                  htmlFor="phrase" 
+                  className="font-lifeSavers font-extrabold text-lg text-lightPink">Phrase
+                  </FormLabel>
                   <FormControl>
                     <Textarea
+                      id="phrase"
                       placeholder="Écrire ta citation"
                       {...field}
                       className="w-full font-lifeSavers mt-3 bg-lightPink"
