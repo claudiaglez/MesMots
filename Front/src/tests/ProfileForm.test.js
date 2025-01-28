@@ -137,5 +137,34 @@ describe('ProfileForm', () => {
     expect(await screen.findByText("Le titre du livre doit contenir au moins 2 caractères.")).toBeInTheDocument();
     expect(await screen.findByText("La citation doit contenir au moins 5 caractères.")).toBeInTheDocument();
   });
+
+  it('handles successful form submission', async () => {
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve({ success: true })
+      })
+    );
+  
+    render(
+      <BrowserRouter>
+        <ProfileForm />
+      </BrowserRouter>
+    );
+  
+    const auteurInput = screen.getByRole('textbox', { name: /Auteur\/ice/i });
+    const livreInput = screen.getByRole('textbox', { name: /Livre/i });
+    const phraseInput = screen.getByRole('textbox', { name: /Phrase/i });
+  
+    await userEvent.type(auteurInput, 'Victor Hugo');
+    await userEvent.type(livreInput, 'Les Misérables');
+    await userEvent.type(phraseInput, 'Une citation test');
+  
+    const submitButton = screen.getByRole('button', { name: /ajouter/i });
+    await userEvent.click(submitButton);
+  
+    expect(await screen.findByText('Bravo! Citation ajoutée correctement!')).toBeInTheDocument();
+  });
+
   });
 
