@@ -166,5 +166,22 @@ describe('ProfileForm', () => {
     expect(await screen.findByText('Bravo! Citation ajoutée correctement!')).toBeInTheDocument();
   });
 
+  it('handles failed form submission', async () => {
+    global.fetch = jest.fn(() =>
+      Promise.reject(new Error('Error en la solicitud'))
+    );
+  
+    render(
+      <BrowserRouter>
+        <ProfileForm />
+      </BrowserRouter>
+    );
+  
+    const submitButton = screen.getByRole('button', { name: /ajouter/i });
+    await userEvent.click(submitButton);
+  
+    expect(await screen.findByText("Ooops! Erreur dans l'ajout de la citation")).toBeInTheDocument();
+  });
+
   });
 
