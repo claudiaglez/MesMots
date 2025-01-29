@@ -106,6 +106,15 @@ jest.mock('@/app/ui/alert-dialog', () => ({
   },
 }));
 
+beforeEach(() => {
+  mockNavigate.mockClear();
+  global.fetch = jest.fn();
+});
+
+afterEach(() => {
+  jest.resetAllMocks();
+});
+
 describe('ProfileForm', () => {
   it('renders form elements', () => {
     render(
@@ -183,5 +192,30 @@ describe('ProfileForm', () => {
     expect(await screen.findByText("Ooops! Erreur dans l'ajout de la citation")).toBeInTheDocument();
   });
 
+  it('resets the form when "Arrière" button is clicked', async () => {
+    const user = userEvent.setup();
+  
+    render(
+      <BrowserRouter>
+        <ProfileForm />
+      </BrowserRouter>
+    );
+  
+    const auteurInput = screen.getByRole('textbox', { name: /Auteur\/ice/i });
+    const livreInput = screen.getByRole('textbox', { name: /Livre/i });
+    const phraseInput = screen.getByRole('textbox', { name: /Phrase/i });
+    const resetButton = screen.getByRole('button', { name: /Arrière/i });
+  
+    await user.type(auteurInput, 'Victor Hugo');
+    await user.type(livreInput, 'Les Misérables');
+    await user.type(phraseInput, 'Une citation test');
+  
+    await user.click(resetButton);
+  
+    expect(auteurInput.value).toBe('');
+    expect(livreInput.value).toBe('');
+    expect(phraseInput.value).toBe('');
   });
+
+});
 
