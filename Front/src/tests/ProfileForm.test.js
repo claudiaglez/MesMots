@@ -266,5 +266,25 @@ it('shows validation errors when fields have insufficient length', async () => {
   expect(screen.getByText("La citation doit contenir au moins 5 caractères.")).toBeInTheDocument();
 });
 
+it('handles API error responses correctly', async () => {
+  global.fetch = jest.fn(() =>
+    Promise.resolve({
+      ok: false,
+      status: 400,
+      json: () => Promise.resolve({ message: 'Bad Request' })
+    })
+  );
+
+  render(
+    <BrowserRouter>
+      <ProfileForm />
+    </BrowserRouter>
+  );
+
+  await userEvent.click(screen.getByRole('button', { name: /ajouter/i }));
+  
+  expect(await screen.findByText("Ooops! Erreur dans l'ajout de la citation")).toBeInTheDocument();
+});
+
 });
 
