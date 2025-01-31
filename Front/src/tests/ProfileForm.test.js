@@ -286,5 +286,17 @@ it('handles API error responses correctly', async () => {
   expect(await screen.findByText("Ooops! Erreur dans l'ajout de la citation")).toBeInTheDocument();
 });
 
+it('displays correct placeholders for all fields', () => {
+  render(
+    <BrowserRouter>
+      <ProfileForm />
+    </BrowserRouter>
+  );
+
+  expect(screen.getByPlaceholderText("Écrire le nom de l'auteur")).toBeInTheDocument();
+  expect(screen.getByPlaceholderText("Écrire le titre du livre")).toBeInTheDocument();
+  expect(screen.getByPlaceholderText("Écrire ta citation")).toBeInTheDocument();
+});
+
 });
 
