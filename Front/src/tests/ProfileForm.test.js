@@ -241,6 +241,30 @@ describe('ProfileForm', () => {
     expect(mockNavigate).toHaveBeenCalledWith('/phrases');
 });
   
+it('shows validation errors when fields have insufficient length', async () => {
+  const user = userEvent.setup();
+  
+  render(
+    <BrowserRouter>
+      <ProfileForm />
+    </BrowserRouter>
+  );
+
+  const auteurInput = screen.getByRole('textbox', { name: /Auteur\/ice/i });
+  const livreInput = screen.getByRole('textbox', { name: /Livre/i });
+  const phraseInput = screen.getByRole('textbox', { name: /Phrase/i });
+
+  await user.type(auteurInput, 'A');  // less 2 characters
+  await user.type(livreInput, 'B');   // less 2 characters
+  await user.type(phraseInput, 'Test'); // less 5 characters
+
+  const submitButton = screen.getByRole('button', { name: /ajouter/i });
+  await user.click(submitButton);
+
+  expect(screen.getByText("L'auteur doit contenir au moins 2 caractères.")).toBeInTheDocument();
+  expect(screen.getByText("Le titre du livre doit contenir au moins 2 caractères.")).toBeInTheDocument();
+  expect(screen.getByText("La citation doit contenir au moins 5 caractères.")).toBeInTheDocument();
+});
 
 });
 
