@@ -8,6 +8,8 @@ const mockNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useNavigate: () => mockNavigate,
+  useLocation: () => ({ pathname: '/current-path' }),
+  useHref: () => ''
 }));
 
 jest.mock('react-hook-form', () => ({
@@ -39,8 +41,8 @@ jest.mock('react-hook-form', () => ({
 }));
 
 jest.mock('@/components/ui/Button', () => ({
-  Button: function Button({ children }) { 
-    return <button>{children}</button>; 
+  Button: function Button({ children, onClick, type }) { 
+    return <button onClick={onClick} type={type}>{children}</button>; 
   },
 }));
 
@@ -89,11 +91,11 @@ jest.mock('@/app/ui/textarea', () => ({
 }));
 
 jest.mock('@/app/ui/alert-dialog', () => ({
-  AlertDialog: function AlertDialog({ children }) { 
-    return <div>{children}</div>; 
+  AlertDialog: function AlertDialog({ children, open }) { 
+    return open ? <div data-testid="alert-dialog">{children}</div> : null;
   },
-  AlertDialogContent: function AlertDialogContent({ children }) { 
-    return <div>{children}</div>; 
+  AlertDialogContent: function AlertDialogContent({ children, className }) { 
+    return <div className={className}>{children}</div>; 
   },
   AlertDialogHeader: function AlertDialogHeader({ children }) { 
     return <div>{children}</div>; 
@@ -101,8 +103,8 @@ jest.mock('@/app/ui/alert-dialog', () => ({
   AlertDialogFooter: function AlertDialogFooter({ children }) { 
     return <div>{children}</div>; 
   },
-  AlertDialogDescription: function AlertDialogDescription({ children }) { 
-    return <div>{children}</div>; 
+  AlertDialogDescription: function AlertDialogDescription({ children, className }) { 
+    return <div className={className}>{children}</div>; 
   },
 }));
 
@@ -216,6 +218,29 @@ describe('ProfileForm', () => {
     expect(livreInput.value).toBe('');
     expect(phraseInput.value).toBe('');
   });
+
+
+  it('navigates to "/phrases" when dialog is closed', async () => {
+    const user = userEvent.setup();
+    
+    render(
+      <BrowserRouter>
+        <ProfileForm />
+      </BrowserRouter>
+    );
+
+    const submitButton = screen.getByRole('button', { name: /ajouter/i });
+    await user.click(submitButton);
+
+    const errorMessage = await screen.findByText("Ooops! Erreur dans l'ajout de la citation");
+    expect(errorMessage).toBeInTheDocument();
+
+    const okButton = screen.getByRole('button', { name: /ok/i });
+    await user.click(okButton);
+
+    expect(mockNavigate).toHaveBeenCalledWith('/phrases');
+});
+  
 
 });
 
