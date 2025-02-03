@@ -11,6 +11,8 @@ const Input = React.forwardRef(({ className, type, ...props }, ref) => {
         className
       )}
       ref={ref}
+      aria-label={ariaLabel}
+      aria-describedby={ariaDescribedby}
       {...props} />)
   );
 })
