@@ -14,7 +14,7 @@ const Navbar = () => {
         <Button aria-label="Voir mes phrases"> mes phrases </Button>
       </Link>
       <Link to="/ajouter" title="Ajouter nouvelle phrase"> 
-        <Button variant="circle" size="circle" className="mr-4">
+        <Button variant="circle" size="circle" className="mr-4" aria-label="Ajouter nouvelle phrase">
           <FiPlus aria-hidden="true" />
         </Button>
       </Link>
