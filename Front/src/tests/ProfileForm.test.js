@@ -298,5 +298,59 @@ it('displays correct placeholders for all fields', () => {
   expect(screen.getByPlaceholderText("Écrire ta citation")).toBeInTheDocument();
 });
 
+it('sends correctly formatted data to the API', async () => {
+  const user = userEvent.setup();
+  const mockFetch = jest.fn(() =>
+    Promise.resolve({
+      ok: true,
+      json: () => Promise.resolve({ success: true })
+    })
+  );
+  global.fetch = mockFetch;
+
+  // Mock useForm para este test específico
+  const mockSubmit = jest.fn();
+  jest.spyOn(require('react-hook-form'), 'useForm').mockImplementation(() => ({
+    handleSubmit: (fn) => (e) => {
+      e.preventDefault();
+      fn({
+        auteur: 'Victor Hugo',
+        livre: 'Les Misérables',
+        phrase: 'Une citation test'
+      });
+    },
+    control: {},
+    reset: jest.fn(),
+    formState: { errors: {} },
+    register: jest.fn(),
+    setValue: jest.fn(),
+    getValues: jest.fn(),
+    watch: jest.fn(),
+  }));
+
+  render(
+    <BrowserRouter>
+      <ProfileForm />
+    </BrowserRouter>
+  );
+
+  await user.click(screen.getByRole('button', { name: /ajouter/i }));
+
+  expect(mockFetch).toHaveBeenCalledWith(
+    'http://127.0.0.1:8000/api/quotes',
+    expect.objectContaining({
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        author: 'Victor Hugo',
+        title: 'Les Misérables',
+        phrase: 'Une citation test'
+      })
+    })
+  );
+});
+
 });
 
