@@ -91,11 +91,12 @@ export function ProfileForm() {
                       placeholder="Écrire le nom de l'auteur"
                       {...field}
                       className="w-full font-lifeSavers mt-3 bg-lightPink"
+                      aria-invalid={form.formState.errors.auteur ? "true" : "false"}
                       aria-describedby="auteur-error"
                     />
                   </FormControl>
                 </div>
-                <FormMessage id="auteur-error" message={form.formState.errors.auteur?.message} />
+                <FormMessage id="auteur-error" role="alert" aria-live="polite" message={form.formState.errors.auteur?.message} />
               </FormItem>
             )}
           />
@@ -114,12 +115,13 @@ export function ProfileForm() {
                       id="livre"
                       placeholder="Écrire le titre du livre"
                       {...field}
-                      className="w-full font-lifeSavers mt-3 bg-lightPink"
+                      className={`w-full font-lifeSavers mt-3 bg-lightPink ${form.formState.errors.livre ? 'border-red-500' : ''}`}
+                      aria-invalid={form.formState.errors.livre ? "true" : "false"}
                       aria-describedby="livre-error"
                     />
                   </FormControl>
                 </div>
-                <FormMessage id="livre-error" message={form.formState.errors.livre?.message} />
+                <FormMessage id="livre-error" role="alert" aria-live="polite" message={form.formState.errors.livre?.message} />
               </FormItem>
             )}
           />
@@ -138,12 +140,13 @@ export function ProfileForm() {
                       id="phrase"
                       placeholder="Écrire ta citation"
                       {...field}
-                      className="w-full font-lifeSavers mt-3 bg-lightPink"
+                      className={`w-full font-lifeSavers mt-3 bg-lightPink ${form.formState.errors.phrase ? 'border-red-500' : ''}`}
+                      aria-invalid={form.formState.errors.phrase ? "true" : "false"}
                       aria-describedby="phrase-error"
                     />
                   </FormControl>
                 </div>
-                <FormMessage id="phrase-error" message={form.formState.errors.phrase?.message} />
+                <FormMessage id="phrase-error" role="alert" aria-live="polite" message={form.formState.errors.phrase?.message} />
               </FormItem>
             )}
           />
