@@ -96,7 +96,7 @@ export function ProfileForm() {
                     />
                   </FormControl>
                 </div>
-                <FormMessage id="auteur-error" role="alert" aria-live="polite" message={form.formState.errors.auteur?.message} />
+                <FormMessage id="auteur-error" role="alert" aria-live="assertive" message={form.formState.errors.auteur?.message} />
               </FormItem>
             )}
           />
@@ -121,7 +121,7 @@ export function ProfileForm() {
                     />
                   </FormControl>
                 </div>
-                <FormMessage id="livre-error" role="alert" aria-live="polite" message={form.formState.errors.livre?.message} />
+                <FormMessage id="livre-error" role="alert" aria-live="assertive" message={form.formState.errors.livre?.message} />
               </FormItem>
             )}
           />
@@ -146,7 +146,7 @@ export function ProfileForm() {
                     />
                   </FormControl>
                 </div>
-                <FormMessage id="phrase-error" role="alert" aria-live="polite" message={form.formState.errors.phrase?.message} />
+                <FormMessage id="phrase-error" role="alert" aria-live="assertive" message={form.formState.errors.phrase?.message} />
               </FormItem>
             )}
           />
