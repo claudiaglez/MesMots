@@ -65,6 +65,7 @@ const FormLabel = React.forwardRef(({ className, ...props }, ref) => {
       ref={ref}
       className={cn(error && "text-destructive", className)}
       htmlFor={formItemId}
+      aria-labelledby={formItemId} 
       {...props} />)
   );
 })
@@ -83,6 +84,7 @@ const FormControl = React.forwardRef(({ ...props }, ref) => {
           : `${formDescriptionId} ${formMessageId}`
       }
       aria-invalid={!!error}
+      role="form" 
       {...props} />)
   );
 })
@@ -114,6 +116,8 @@ const FormMessage = React.forwardRef(({ className, children, ...props }, ref) =>
       ref={ref}
       id={formMessageId}
       className={cn("text-sm font-medium text-destructive", className)}
+      role="alert" 
+      aria-live="assertive"
       {...props}>
       {body}
     </p>)
