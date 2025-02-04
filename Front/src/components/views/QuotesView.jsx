@@ -16,6 +16,7 @@ import PageLayout from '@/components/ui/PageLayout';
 
 
 const QuotesView = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [quotes, setQuotes] = useState([]);
   const [selectedQuote, setSelectedQuote] = useState(null);
   const [selectedColor, setSelectedColor] = useState("");
@@ -35,42 +36,32 @@ const QuotesView = () => {
     { label: 'Phrases', isCurrent: true },
   ];
   
-
-  const fetchQuotes = async () => {
-    try {
-      const response = await fetch("http://127.0.0.1:8000/api/quotes");
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const data = await response.json();
-      setQuotes(data);
-    } catch (error) {
-      console.error("Error fetching quotes:", error);
+const reloadQuotes = async () => {
+  setIsLoading(true);
+  try {
+    const [quotesResponse, authorsResponse, booksResponse] = await Promise.all([
+      fetch("http://127.0.0.1:8000/api/quotes"),
+      axios.get("http://127.0.0.1:8000/api/authors"),
+      axios.get("http://127.0.0.1:8000/api/titles")
+    ]);
+    
+    if (!quotesResponse.ok) {
+      throw new Error("Error fetching quotes");
     }
-  };
-
-  const fetchAuthors = async () => {
-    try {
-      const response = await axios.get("http://127.0.0.1:8000/api/authors");
-      setAuthors(response.data.flat());
-    } catch (error) {
-      console.error("Error fetching authors:", error);
-    }
-  };
-
-  const fetchBooks = async () => {
-    try {
-      const response = await axios.get("http://127.0.0.1:8000/api/titles");
-      setBooks(response.data.flat());
-    } catch (error) {
-      console.error("Error fetching books:", error);
-    }
-  };
+    
+    const quotesData = await quotesResponse.json();
+    setQuotes(quotesData);
+    setAuthors(authorsResponse.data.flat());
+    setBooks(booksResponse.data.flat());
+  } catch (error) {
+    console.error("Error reloading data:", error);
+  } finally {
+    setIsLoading(false); 
+  }
+};
 
   useEffect(() => {
-    fetchQuotes();
-    fetchAuthors();
-    fetchBooks();
+    reloadQuotes();
   }, []);
 
   const filteredQuotes = quotes.filter((quote) => {
@@ -117,11 +108,10 @@ const QuotesView = () => {
   };
 
   const confirmDelete = async () => {
+    setIsLoading(true);
     try {
       await axios.delete(`http://127.0.0.1:8000/api/quotes/${quoteToDelete}`);
-      setQuotes((prevQuotes) =>
-        prevQuotes.filter((quote) => quote.id !== quoteToDelete)
-      );
+      await reloadQuotes(); 
       setIsSuccessMessageVisible(true);
       setTimeout(() => {
         setIsSuccessMessageVisible(false);
@@ -132,6 +122,7 @@ const QuotesView = () => {
     } finally {
       setIsAlertDialogOpen(false);
       setQuoteToDelete(null);
+      setIsLoading(false);
     }
   };
 
@@ -141,21 +132,20 @@ const QuotesView = () => {
   };
 
   const handleSave = async () => {
+    setIsLoading(true);
     console.log("Guardando cambios...");
     try {
       await axios.put(
         `http://127.0.0.1:8000/api/quotes/${editedQuote.id}`,
         editedQuote
       );
-      setQuotes((prevQuotes) =>
-        prevQuotes.map((quote) =>
-          quote.id === editedQuote.id ? editedQuote : quote
-        )
-      );
+      await reloadQuotes();
       setIsEditing(false);
       closeModal();
     } catch (error) {
       console.error("Erreur d'enregistrement de la citation éditée:", error);
+    } finally {
+      setIsLoading(false); 
     }
   };
 
@@ -232,16 +222,23 @@ const QuotesView = () => {
           </Select>
         </div>
 
-        {filteredQuotes.length === 0 ? (
+        {isLoading ? (
+    <div className="text-center p-4 text-darkPink font-bold font-lifeSavers mt-6 flex flex-col items-center justify-center">
+    <div className="flex items-center mb-4">
+      <div className="w-8 h-12 bg-darkPink animate-bounce mx-1 rounded" style={{animationDelay: "0ms"}}></div>
+      <div className="w-8 h-12 bg-green animate-bounce mx-1 rounded" style={{animationDelay: "150ms"}}></div>
+      <div className="w-8 h-12 bg-blue animate-bounce mx-1 rounded" style={{animationDelay: "300ms"}}></div>
+    </div>
+    <p className="text-2xl">Chargement des citations...</p>
+  </div>
+        ) : filteredQuotes.length === 0 ? (
           <div className="text-center p-4 text-darkPink font-bold font-lifeSavers text-4xl mt-6">
             Oups, nous n'avons pas trouvé cette citation !
           </div>
         ) : (
-          <div
-            className={`flex flex-1 justify-center items-center flex-wrap ${
-              selectedQuote ? "blur-sm" : ""
-            }`}
-          >
+          <div className={`flex flex-1 justify-center items-center flex-wrap ${
+            selectedQuote ? "blur-sm" : ""
+          }`}>
             {currentQuotes.map((quote, index) => {
               const formattedDate = quote.date
                 ? formatDate(quote.date)
