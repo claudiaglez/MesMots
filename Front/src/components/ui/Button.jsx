@@ -25,7 +25,7 @@ const buttonVariants = cva(
         lg: "h-11 rounded-md px-8",
         icon: "h-10 w-10",
         navbar: "h-10 px-8 py-2",
-        circle: "h-12 w-12 rounded-full",
+        circle: "min-w-[48px] min-h-[48px] h-12 w-12 rounded-full",
         filter: "rounded-full h-10 px-12",
         responsive: "h-8 px-4 sm:h-9 sm:px-6 md:h-10 md:px-8",
       },
