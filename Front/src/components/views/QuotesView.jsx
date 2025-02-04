@@ -170,10 +170,9 @@ const QuotesView = () => {
     <PageLayout breadcrumbItems={breadcrumbItems}>
       <main className="h-screen flex flex-col">
         <div className="flex flex-col flex-1 p-4">
-          {/* Filtros */}
           <section
             className="flex justify-between p-4 w-96 space-x-8 pt-8"
-            aria-label="Filtros de citas"
+            aria-label="Filtres des phrases"
           >
             <div>
               <label id="author-label" className="sr-only">
@@ -190,7 +189,6 @@ const QuotesView = () => {
                 }}
                 aria-labelledby="author-label"
               >
-                {/* ... Select content ... */}
               </Select>
             </div>
 
@@ -209,12 +207,10 @@ const QuotesView = () => {
                 }}
                 aria-labelledby="book-label"
               >
-                {/* ... Select content ... */}
               </Select>
             </div>
           </section>
 
-          {/* Estado de carga */}
           {isLoading ? (
             <div
               className="text-center p-4 text-darkPink font-bold font-lifeSavers mt-6 flex flex-col items-center justify-center"
