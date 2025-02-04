@@ -36,29 +36,25 @@ const QuotesView = () => {
     { label: 'Phrases', isCurrent: true },
   ];
   
-const reloadQuotes = async () => {
-  setIsLoading(true);
-  try {
-    const [quotesResponse, authorsResponse, booksResponse] = await Promise.all([
-      fetch("http://127.0.0.1:8000/api/quotes"),
-      axios.get("http://127.0.0.1:8000/api/authors"),
-      axios.get("http://127.0.0.1:8000/api/titles")
-    ]);
-    
-    if (!quotesResponse.ok) {
-      throw new Error("Error fetching quotes");
+  const reloadQuotes = async () => {
+    setIsLoading(true);
+    try {
+      const [quotesResponse, authorsResponse, booksResponse] = await Promise.all([
+        axios.get("http://127.0.0.1:8000/api/quotes"),
+        axios.get("http://127.0.0.1:8000/api/authors"),
+        axios.get("http://127.0.0.1:8000/api/titles")
+      ]);
+  
+      setQuotes(quotesResponse.data);
+      setAuthors(authorsResponse.data.flat());
+      setBooks(booksResponse.data.flat());
+    } catch (error) {
+      console.error("Error reloading data:", error);
+    } finally {
+      setIsLoading(false); 
     }
-    
-    const quotesData = await quotesResponse.json();
-    setQuotes(quotesData);
-    setAuthors(authorsResponse.data.flat());
-    setBooks(booksResponse.data.flat());
-  } catch (error) {
-    console.error("Error reloading data:", error);
-  } finally {
-    setIsLoading(false); 
-  }
-};
+  };
+  
 
   useEffect(() => {
     reloadQuotes();
@@ -229,7 +225,7 @@ const reloadQuotes = async () => {
       <div className="w-8 h-12 bg-green animate-bounce mx-1 rounded" style={{animationDelay: "150ms"}}></div>
       <div className="w-8 h-12 bg-blue animate-bounce mx-1 rounded" style={{animationDelay: "300ms"}}></div>
     </div>
-    <p className="text-2xl">Chargement des citations...</p>
+    <p className="text-2xl">À la recherche de vos mots...</p>
   </div>
         ) : filteredQuotes.length === 0 ? (
           <div className="text-center p-4 text-darkPink font-bold font-lifeSavers text-4xl mt-6">
