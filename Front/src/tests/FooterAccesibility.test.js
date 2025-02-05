@@ -45,4 +45,12 @@ describe('Footer Accessibility', () => {
       expect(text).toHaveClass('sr-only');
     });
   });
+
+  it('social links are keyboard focusable', () => {
+    const socialLinks = screen.getAllByRole('link');
+    
+    socialLinks.forEach(link => {
+      expect(link).not.toHaveAttribute('tabIndex', '-1');
+    });
+  });
 });
