@@ -20,4 +20,13 @@ describe('Footer Accessibility', () => {
     expect(githubLink).toBeInTheDocument();
     expect(linkedinLink).toBeInTheDocument();
   });
+
+  it('social links open in new tab with proper security attributes', () => {
+    const socialLinks = screen.getAllByRole('link');
+    
+    socialLinks.forEach(link => {
+      expect(link).toHaveAttribute('target', '_blank');
+      expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+    });
+  });
 });
