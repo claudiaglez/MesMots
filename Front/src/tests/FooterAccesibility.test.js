@@ -29,4 +29,12 @@ describe('Footer Accessibility', () => {
       expect(link).toHaveAttribute('rel', 'noopener noreferrer');
     });
   });
+
+  it('copyright text is readable', () => {
+    const currentYear = new Date().getFullYear().toString();
+    const copyright = screen.getByText((content) => 
+      content.includes(currentYear) && content.includes('Claudia Glez')
+    );
+    expect(copyright).toBeInTheDocument();
+  });
 });
