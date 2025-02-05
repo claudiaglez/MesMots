@@ -74,7 +74,7 @@ export function ProfileForm() {
   return (
     <>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form lang="fr" onSubmit={form.handleSubmit(onSubmit)} className="space-y-8" aria-label="Formulaire d'ajout de citation">
           <FormField
             control={form.control}
             name="auteur"
@@ -91,10 +91,12 @@ export function ProfileForm() {
                       placeholder="Écrire le nom de l'auteur"
                       {...field}
                       className="w-full font-lifeSavers mt-3 bg-lightPink"
+                      aria-invalid={form.formState.errors.auteur ? "true" : "false"}
+                      aria-describedby="auteur-error"
                     />
                   </FormControl>
                 </div>
-                <FormMessage message={form.formState.errors.auteur?.message} />
+                <FormMessage id="auteur-error" role="alert" aria-live="polite" message={form.formState.errors.auteur?.message} />
               </FormItem>
             )}
           />
@@ -113,11 +115,13 @@ export function ProfileForm() {
                       id="livre"
                       placeholder="Écrire le titre du livre"
                       {...field}
-                      className="w-full font-lifeSavers mt-3 bg-lightPink"
+                      className={`w-full font-lifeSavers mt-3 bg-lightPink ${form.formState.errors.livre ? 'border-red-500' : ''}`}
+                      aria-invalid={form.formState.errors.livre ? "true" : "false"}
+                      aria-describedby="livre-error"
                     />
                   </FormControl>
                 </div>
-                <FormMessage message={form.formState.errors.livre?.message} />
+                <FormMessage id="livre-error" role="alert" aria-live="polite" message={form.formState.errors.livre?.message} />
               </FormItem>
             )}
           />
@@ -134,34 +138,36 @@ export function ProfileForm() {
                   <FormControl>
                     <Textarea
                       id="phrase"
-                      placeholder="Écrire ta citation"
+                      placeholder="Écrire ton phrase"
                       {...field}
-                      className="w-full font-lifeSavers mt-3 bg-lightPink"
+                      className={`w-full font-lifeSavers mt-3 bg-lightPink ${form.formState.errors.phrase ? 'border-red-500' : ''}`}
+                      aria-invalid={form.formState.errors.phrase ? "true" : "false"}
+                      aria-describedby="phrase-error"
                     />
                   </FormControl>
                 </div>
-                <FormMessage message={form.formState.errors.phrase?.message} />
+                <FormMessage id="phrase-error" role="alert" aria-live="polite" message={form.formState.errors.phrase?.message} />
               </FormItem>
             )}
           />
           <div className="flex justify-evenly">
-            <Button type="submit" variant="default">
+            <Button type="submit" variant="default" aria-label="Ajouter une citation">
               Ajouter
             </Button>
-            <Button type="button" variant="secondary" onClick={() => form.reset()}>
+            <Button type="reset" variant="secondary" onClick={() => form.reset()} aria-label="Réinitialiser le formulaire">
               Arrière
             </Button>
           </div>
         </form>
       </Form>
 
-      <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <AlertDialogContent className="bg-cream font-lifeSavers font-bold text-black rounded-lg shadow-lg p-6 ">
+      <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen} role="alertdialog">
+        <AlertDialogContent className="bg-cream font-lifeSavers font-bold text-black rounded-lg shadow-lg p-6 " aria-live="polite">
           <AlertDialogHeader>
             <AlertDialogDescription className="text-xl">{dialogMessage}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <Button variant="default" onClick={handleDialogClose}> 
+            <Button variant="default" onClick={handleDialogClose} aria-label="Fermer l'alerte"> 
               Ok
             </Button>
           </AlertDialogFooter>
