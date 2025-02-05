@@ -37,4 +37,12 @@ describe('Footer Accessibility', () => {
     );
     expect(copyright).toBeInTheDocument();
   });
+
+  it('social icons have screen reader only text', () => {
+    const srOnlyTexts = screen.getAllByText(/Profile$/i);
+    expect(srOnlyTexts).toHaveLength(2);
+    srOnlyTexts.forEach(text => {
+      expect(text).toHaveClass('sr-only');
+    });
+  });
 });
