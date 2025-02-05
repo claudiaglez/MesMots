@@ -142,7 +142,7 @@ describe('ProfileForm', () => {
   
     expect(screen.getByPlaceholderText("Écrire le nom de l'auteur")).toBeInTheDocument();
     expect(screen.getByPlaceholderText("Écrire le titre du livre")).toBeInTheDocument();
-    expect(screen.getByPlaceholderText("Écrire ta citation")).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("Écrire ton phrase")).toBeInTheDocument();
   });
 
    // Validation

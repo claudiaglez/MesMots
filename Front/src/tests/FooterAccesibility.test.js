@@ -12,4 +12,12 @@ describe('Footer Accessibility', () => {
     const footer = screen.getByRole('contentinfo');
     expect(footer).toBeInTheDocument();
   });
+
+  it('social media links have proper aria-labels', () => {
+    const githubLink = screen.getByLabelText('GitHub');
+    const linkedinLink = screen.getByLabelText('LinkedIn');
+    
+    expect(githubLink).toBeInTheDocument();
+    expect(linkedinLink).toBeInTheDocument();
+  });
 });
