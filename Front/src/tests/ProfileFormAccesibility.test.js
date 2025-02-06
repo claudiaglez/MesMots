@@ -54,4 +54,10 @@ describe('ProfileForm Accessibility', () => {
     expect(form).toHaveAttribute('lang', 'fr');
   });
 
+  it('buttons have accessible text', () => {
+    renderForm();
+    expect(screen.getByRole('button', { name: /ajouter/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /réinitialiser/i })).toBeInTheDocument();
+  });
+
 });
