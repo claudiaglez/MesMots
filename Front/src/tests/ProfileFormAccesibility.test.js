@@ -60,4 +60,18 @@ describe('ProfileForm Accessibility', () => {
     expect(screen.getByRole('button', { name: /réinitialiser/i })).toBeInTheDocument();
   });
 
+  it('input fields indicate error status', async () => {
+    renderForm();
+  const auteurInput = screen.getByLabelText(/auteur/i);
+  const submitButton = screen.getByRole('button', { name: /ajouter/i });
+  
+  await userEvent.type(auteurInput, 'a');
+  await userEvent.click(submitButton);
+
+  await waitFor(() => {
+    expect(auteurInput).toHaveAttribute('aria-invalid', 'true');
+    expect(auteurInput).toHaveAttribute('aria-describedby', 'auteur-error');
+  });
+  });
+
 });
