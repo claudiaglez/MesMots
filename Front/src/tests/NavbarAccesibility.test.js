@@ -31,5 +31,14 @@ describe('Navbar Accessibility', () => {
         renderNavbar();
         expect(screen.getByRole('navigation')).toBeInTheDocument();
       });
+
+    it('links have clear destinations', () => {
+        renderNavbar();
+        const links = screen.getAllByRole('link');
+        
+        expect(links[0]).toHaveAttribute('href', '/');
+        expect(links[1]).toHaveAttribute('href', '/phrases');
+        expect(links[2]).toHaveAttribute('href', '/ajouter');
+      });
       
     });
