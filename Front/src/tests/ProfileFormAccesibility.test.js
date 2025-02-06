@@ -48,4 +48,10 @@ describe('ProfileForm Accessibility', () => {
     });
   });
 
+  it('form has specified language', () => {
+    renderForm();
+    const form = screen.getByRole('form', { name: "Formulaire d'ajout de citation" });
+    expect(form).toHaveAttribute('lang', 'fr');
+  });
+
 });
