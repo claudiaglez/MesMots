@@ -3,6 +3,7 @@ import '@testing-library/jest-dom';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { ProfileForm } from '../app/ui/ProfileForm';
+import userEvent from '@testing-library/user-event';
 
 const renderForm = () => {
   render(
@@ -29,6 +30,21 @@ describe('ProfileForm Accessibility', () => {
     await waitFor(() => {
       const errors = screen.getAllByRole('alert');
       expect(errors).toHaveLength(3);
+    });
+  });
+
+  it('alert dialog is accessible', async () => {
+    renderForm();
+    const user = userEvent.setup();
+    
+    await user.type(screen.getByLabelText(/auteur/i), 'Test Auteur');
+    await user.type(screen.getByLabelText(/livre/i), 'Test Livre');
+    await user.type(screen.getByLabelText(/phrase/i), 'Test Phrase');
+    
+    await user.click(screen.getByRole('button', { name: /ajouter/i }));
+
+    await waitFor(() => {
+      expect(screen.getByRole('alertdialog')).toBeInTheDocument();
     });
   });
 
