@@ -21,5 +21,10 @@ describe('Navbar Accessibility', () => {
         });
       });
     
-
+      test('buttons have descriptive labels', () => {
+        renderNavbar();
+        expect(screen.getByRole('button', { name: /voir mes phrases/i })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /ajouter nouvelle phrase/i })).toBeInTheDocument();
+      });
+    
     });
