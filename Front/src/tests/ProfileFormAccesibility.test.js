@@ -21,4 +21,15 @@ describe('ProfileForm Accessibility', () => {
     expect(screen.getByLabelText(/phrase/i)).toBeInTheDocument();
   });
 
+  it('required fields show accessible error messages', async () => {
+    renderForm();
+    const submitButton = screen.getByRole('button', { name: /ajouter/i });
+    fireEvent.click(submitButton);
+
+    await waitFor(() => {
+      const errors = screen.getAllByRole('alert');
+      expect(errors).toHaveLength(3);
+    });
+  });
+
 });
