@@ -15,7 +15,7 @@ The main purpose of this application is to simplify the collection and managemen
 
 
 ## :camera: Preview
-![imagen](public/assets/img/MesMotsCapture.png)
+![imagen](public/MesMotsCapture.png)
 
 
 ## ⚙️ Technologies
@@ -175,12 +175,17 @@ npm test -- --coverage
   "book": "Hamlet"
 }
 
+```
+
 #### Example Response (Error):
+```json
 {
   "error": "Quote not found"
 }
 
 ```
+
+
 
 </details> 
 
