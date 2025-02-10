@@ -180,7 +180,9 @@ npm test -- --coverage
   "error": "Quote not found"
 }
 
-</details> ```
+```
+
+</details> 
 
 ## 📂 Project Structure
 
