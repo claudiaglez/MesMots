@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/components/ui/PageLayout.jsx</title>
+    <title>Code coverage report for src/app/ui/Navbar.jsx</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../prettify.css" />
     <link rel="stylesheet" href="../../../base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">src/components/ui</a> PageLayout.jsx</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">src/app/ui</a> Navbar.jsx</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">66.66% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>2/3</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/2</span>
+                <span class='fraction'>1/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">66.66% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>2/3</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -89,21 +89,14 @@
 <a name='L24'></a><a href='#L24'>24</a>
 <a name='L25'></a><a href='#L25'>25</a>
 <a name='L26'></a><a href='#L26'>26</a>
-<a name='L27'></a><a href='#L27'>27</a>
-<a name='L28'></a><a href='#L28'>28</a>
-<a name='L29'></a><a href='#L29'>29</a>
-<a name='L30'></a><a href='#L30'>30</a>
-<a name='L31'></a><a href='#L31'>31</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L27'></a><a href='#L27'>27</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -122,38 +115,33 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from 'react';
-import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator } from '../../app/ui/breadcrumb'; 
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Button } from "@/components/ui/Button";
+import { FiPlus } from "react-icons/fi";
+import { FaHome } from "react-icons/fa";
+import React from "react";
+import { Link } from 'react-router-dom'; 
 &nbsp;
-const PageLayout = ({ children, breadcrumbItems }) =&gt; {
+const Navbar = () =&gt; {
   return (
-    &lt;div&gt;
-      {/* Breadcrumb */}
-      &lt;Breadcrumb className="mt-16 z-50 ml-8 font-lifeSavers text-darkPink"&gt;
-        &lt;BreadcrumbList&gt;
-          {breadcrumbItems.map(<span class="fstat-no" title="function not covered" >(i</span>tem, index) =&gt; (
-<span class="cstat-no" title="statement not covered" >            &lt;React.Fragment key={index}&gt;</span>
-              &lt;BreadcrumbItem&gt;
-                {item.isCurrent ? (
-                  &lt;BreadcrumbPage&gt;{item.label}&lt;/BreadcrumbPage&gt;
-                ) : (
-                  &lt;BreadcrumbLink href={item.href}&gt;{item.label}&lt;/BreadcrumbLink&gt;
-                )}
-              &lt;/BreadcrumbItem&gt;
-              {index &lt; breadcrumbItems.length - 1 &amp;&amp; &lt;BreadcrumbSeparator /&gt;}
-            &lt;/React.Fragment&gt;
-          ))}
-        &lt;/BreadcrumbList&gt;
-      &lt;/Breadcrumb&gt;
-&nbsp;
-      {/* Contenido principal de la página */}
-      {children}
-    &lt;/div&gt;
+    &lt;nav className="fixed top-0 left-0 w-full flex flex-row justify-end items-center p-4 bg-cream shadow-darkPink/40 shadow-md z-50 space-x-4"&gt;
+      &lt;Link to="/" aria-label="Accueil"&gt; 
+        &lt;FaHome className="text-blue text-3xl hover:text-lightPink" aria-hidden="true" /&gt;
+      &lt;/Link&gt;
+      &lt;Link to="/phrases" title="Mes phrases"&gt; 
+        &lt;Button aria-label="Voir mes phrases"&gt; mes phrases &lt;/Button&gt;
+      &lt;/Link&gt;
+      &lt;Link to="/ajouter" title="Ajouter nouvelle phrase"&gt; 
+        &lt;Button variant="circle" size="circle" className="mr-4" aria-label="Ajouter nouvelle phrase"&gt;
+          &lt;FiPlus aria-hidden="true" /&gt;
+        &lt;/Button&gt;
+      &lt;/Link&gt;
+    &lt;/nav&gt;
   );
 };
 &nbsp;
-export default PageLayout;</pre></td></tr></table></pre>
+export default Navbar;
+&nbsp;
+&nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
