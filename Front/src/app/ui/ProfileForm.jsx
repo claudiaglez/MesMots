@@ -138,7 +138,7 @@ export function ProfileForm() {
                   <FormControl>
                     <Textarea
                       id="phrase"
-                      placeholder="Écrire ta citation"
+                      placeholder="Écrire ton phrase"
                       {...field}
                       className={`w-full font-lifeSavers mt-3 bg-lightPink ${form.formState.errors.phrase ? 'border-red-500' : ''}`}
                       aria-invalid={form.formState.errors.phrase ? "true" : "false"}

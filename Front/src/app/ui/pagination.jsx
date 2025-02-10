@@ -5,8 +5,9 @@ import { buttonVariants } from "../../components/ui/Button"
 
 const Pagination = ({ quotesPerPage, totalQuotes, paginate, currentPage }) => {
   const pageNumbers = [];
+  const totalPages = Math.ceil(totalQuotes / quotesPerPage);
 
-  for (let i = 1; i <= Math.ceil(totalQuotes / quotesPerPage); i++) {
+  for (let i = 1; i <= totalPages; i++) {
     pageNumbers.push(i);
   }
 
@@ -14,7 +15,10 @@ const Pagination = ({ quotesPerPage, totalQuotes, paginate, currentPage }) => {
     <nav role="navigation" aria-label="pagination" className="mx-auto flex w-full justify-center mt-4">
       <ul className="flex flex-row items-center gap-1" role="list">
         {currentPage > 1 && (
-          <PaginationPrevious onClick={() => paginate(currentPage - 1)} />
+          <PaginationPrevious 
+            currentPage={currentPage} 
+            onClick={() => paginate(currentPage - 1)} 
+          />
         )}
 
         {pageNumbers.map((number) => (
@@ -28,8 +32,12 @@ const Pagination = ({ quotesPerPage, totalQuotes, paginate, currentPage }) => {
           </PaginationItem>
         ))}
 
-        {currentPage < pageNumbers.length && (
-          <PaginationNext onClick={() => paginate(currentPage + 1)} />
+        {currentPage < totalPages && (
+          <PaginationNext 
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onClick={() => paginate(currentPage + 1)} 
+          />
         )}
       </ul>
     </nav>
@@ -57,7 +65,7 @@ const PaginationLink = ({ className, isActive, size = "icon", ...props }) => (
 );
 PaginationLink.displayName = "PaginationLink";
 
-const PaginationPrevious = ({ className, ...props }) => (
+const PaginationPrevious = ({ className, currentPage, ...props }) => (
   <PaginationLink
     aria-label="Go to previous page"
     aria-disabled={currentPage <= 1}
@@ -72,7 +80,7 @@ const PaginationPrevious = ({ className, ...props }) => (
 );
 PaginationPrevious.displayName = "PaginationPrevious";
 
-const PaginationNext = ({ className, ...props }) => (
+const PaginationNext = ({ className, currentPage, totalPages, ...props }) => (
   <PaginationLink
     aria-label="Go to next page"
     aria-disabled={currentPage >= totalPages}
