@@ -6,11 +6,14 @@ The ‘Mes Mots’ application allows users to save, organise and view quotes fr
 
 The main purpose of this application is to simplify the collection and management of literary quotations, offering a minimalist but efficient tool for users interested in keeping organised and personalised records of their favourite quotations.
 
-## Main Features 
+## :star: Main Features 
 
 📝 Quote management: Add, edit and delete literary quotes.
+<br>
 📂 Organisation by author and book: Quotes can be easily categorised according to the author and the work they belong to.
+<br>
 🔍 Search and filters: Tools to find quotations quickly.
+<br>
 📊 User-friendly interface: A simple and accessible user experience.
 
 
@@ -115,7 +118,7 @@ http://localhost:5173/
 This project includes automated tests to ensure the quality and stability of the code.
 
 ### Tools Used
-- **Backend (Laravel)**: PHPUnit, Pest
+- **Backend (Laravel)**: PHPUnit
 - **Frontend (React)**: Jest, React Testing Library
 
 ### Running Tests
