@@ -119,6 +119,7 @@ afterEach(() => {
 
 describe('ProfileForm', () => {
   // Rendering
+  
   it('renders form elements', () => {
     render(
       <BrowserRouter>
@@ -142,10 +143,11 @@ describe('ProfileForm', () => {
   
     expect(screen.getByPlaceholderText("Écrire le nom de l'auteur")).toBeInTheDocument();
     expect(screen.getByPlaceholderText("Écrire le titre du livre")).toBeInTheDocument();
-    expect(screen.getByPlaceholderText("Écrire ta citation")).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("Écrire ton phrase")).toBeInTheDocument();
   });
 
    // Validation
+
   it('validates required fields', async () => {
     const user = userEvent.setup();
 
@@ -244,6 +246,7 @@ describe('ProfileForm', () => {
   });
 
 // Navigation
+
   it('navigates to "/phrases" when dialog is closed', async () => {
     const user = userEvent.setup();
 
@@ -313,7 +316,6 @@ it('sends correctly formatted data to the API', async () => {
     })
   );
   global.fetch = mockFetch;
-  // Mock useForm para este test específico
   const mockSubmit = jest.fn();
   jest.spyOn(require('react-hook-form'), 'useForm').mockImplementation(() => ({
     handleSubmit: (fn) => (e) => {
