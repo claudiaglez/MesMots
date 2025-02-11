@@ -31,7 +31,7 @@ const QuotesView = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [focusedIndex, setFocusedIndex] = useState(0);
   const quoteRefs = useRef([]);
-  const modalRef = useRef(null); // Referencia para el modal
+  const modalRef = useRef(null); 
   const quotesPerPage = 10;
   const breadcrumbItems = [
     { label: 'Accueil', href: '/' },
@@ -77,14 +77,12 @@ const QuotesView = () => {
     }
   };
 
-  // Enfocar el modal cuando se abre
   useEffect(() => {
     if (selectedQuote && modalRef.current) {
       modalRef.current.focus();
     }
   }, [selectedQuote]);
 
-  // Manejar eventos de teclado dentro del modal
   const handleModalKeyDown = (event) => {
     if (event.key === "Escape") {
       closeModal();
@@ -157,7 +155,6 @@ const QuotesView = () => {
 
   const handleSave = async () => {
     setIsLoading(true);
-    console.log("Guardando cambios...");
     try {
       await axios.put(
         `http://127.0.0.1:8000/api/quotes/${editedQuote.id}`,
@@ -196,7 +193,6 @@ const QuotesView = () => {
             <Select
               value={selectedAuthor}
               onValueChange={(value) => {
-                console.log("Selected author changed:", value);
                 if (value === "allAuthors") {
                   setSelectedAuthor("");
                 } else {

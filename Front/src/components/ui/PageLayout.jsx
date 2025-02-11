@@ -4,7 +4,6 @@ import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbP
 const PageLayout = ({ children, breadcrumbItems }) => {
   return (
     <div>
-      {/* Breadcrumb */}
       <Breadcrumb className="mt-16 z-50 ml-8 font-lifeSavers text-darkPink">
         <BreadcrumbList>
           {breadcrumbItems.map((item, index) => (
@@ -22,7 +21,6 @@ const PageLayout = ({ children, breadcrumbItems }) => {
         </BreadcrumbList>
       </Breadcrumb>
 
-      {/* Contenido principal de la página */}
       {children}
     </div>
   );
